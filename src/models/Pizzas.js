@@ -15,7 +15,7 @@ const Pizza = sequelize.define("Pizza", {
         allowNull: false,
     },
     preco_pequena: {
-        Type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
     preco_media: {
@@ -23,7 +23,7 @@ const Pizza = sequelize.define("Pizza", {
         allowNull: false,
     },
     preco_grande: {
-        Type: DataTypes.DECIMAL(10, 20),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
     preco_familia: {
