@@ -1,15 +1,26 @@
-const sequelize = require("../config/database");
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
 
-async function connectDatabase() {
-  try {
-    await sequelize.authenticate();
-    console.log("✔ Conectado ao MySQL com sucesso!");
-    
-    await sequelize.sync(); // <-- cria as tabelas automaticamente
-    console.log("✔ Tabelas sincronizadas!");
-  } catch (error) {
-    console.error("❌ Erro ao conectar ao MySQL:", error);
-  }
-}
+// importa corretamente (sem {})
+const sequelize = require('../config/database.js');
 
-module.exports = { sequelize, connectDatabase };
+const db = {};
+
+fs.readdirSync(__dirname)
+  .filter(file => {
+    return (
+      file !== path.basename(__filename) &&
+      file.endsWith('.js') &&
+      !file.includes('.test')
+    );
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file));
+    db[model.name] = model;
+  });
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

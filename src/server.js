@@ -1,16 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-const { connectDatabase } = require("./models");
-const pizzaRoutes = require("./routes/pizzaRoutes");
+const app = require("./services/Services"); // Importa o serviço principal
 
-const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
-app.use("/pizzas", pizzaRoutes);
-
-// conexão com o banco
-connectDatabase();
-
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
