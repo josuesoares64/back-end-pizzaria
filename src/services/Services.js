@@ -8,6 +8,10 @@ class Services {
     async pegaTodosOsProdutos(where = {}) {
         return await this.model.findAll({ where });
     }
+
+    async criaProduto(dadosDoProduto) {
+        return await this.model.create(dadosDoProduto);
+    }
 }
 
 module.exports = Services;

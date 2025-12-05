@@ -14,7 +14,7 @@ const Pizza = sequelize.define(
   },
   {
     tableName: "pizzas",
-    timestamps: false,
+    timestamps: true,
   }
 );
 
