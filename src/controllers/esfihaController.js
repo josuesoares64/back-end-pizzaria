@@ -1,11 +1,11 @@
-const Controller = require('./Controller.js');
-const PizzaServices = require('../services/ServicesPizza.js');
+const Controller = require('./Controller');
+const ServicesEsfiha = require('../services/ServicesEsfiha.js');
 
-const pizzaServices = new PizzaServices();
+const esfihaServices = new ServicesEsfiha();
 
-class PizzaController extends Controller {
+class EsfihaController extends Controller {
     constructor() {
-        super(pizzaServices);
+        super(esfihaServices);
     }
 
     async pegaProduto(req, res) {
@@ -22,4 +22,4 @@ class PizzaController extends Controller {
     }
 }
 
-module.exports = PizzaController;
+module.exports = EsfihaController;

@@ -1,9 +1,9 @@
-const Services = require("./Services");
+const Services = require('./Services.js');
 
-class ServicesPizza extends Services {
-  constructor() {
-    super("Pizza"); // nome do model
-  }
+class PizzaServices extends Services {
+    constructor() {
+        super('Pizza')
+    }
 }
 
-module.exports = new ServicesPizza();
+module.exports = PizzaServices;

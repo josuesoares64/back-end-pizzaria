@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const pizzaController = require('../controllers/pizzaController');
-const upload = require('../middlewares/upload');
+const PizzaController = require('../controllers/pizzaController.js');
 
-router.get('/', pizzaController.getAll);
-router.post('/', upload.single('imagem'), pizzaController.create);
+const pizzaController = new PizzaController();
+
+router.get('/pizzas', (req, res) => pizzaController.pegaTodos(req, res));
 
 module.exports = router;

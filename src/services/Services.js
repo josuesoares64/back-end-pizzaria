@@ -1,29 +1,13 @@
-const database = require("../models");
+const dataSource = require('../models');
 
 class Services {
-  constructor(nomeDoModelo) {
-    this.nomeDoModelo = nomeDoModelo;
-  }
+    constructor(nomeDoModelo) {
+        this.model = dataSource[nomeDoModelo];
+    }
 
-  async pegaTodosOsRegistros() {
-    return await database[this.nomeDoModelo].findAll();
-  }
-
-  async pegaUmRegistroPorId(id) {
-    return await database[this.nomeDoModelo].findOne({ where: { id } });
-  }
-
-  async criaRegistro(dados) {
-    return await database[this.nomeDoModelo].create(dados);
-  }
-
-  async atualizaRegistro(dadosAtualizados, id) {
-    const registro = await database[this.nomeDoModelo].findOne({ where: { id } });
-    if (!registro) return false;
-
-    await database[this.nomeDoModelo].update(dadosAtualizados, { where: { id } });
-    return true;
-  }
+    async pegaTodosOsProdutos(where = {}) {
+        return await this.model.findAll({ where });
+    }
 }
 
 module.exports = Services;
