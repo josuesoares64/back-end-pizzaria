@@ -2,14 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const sequelize = require('./config/database'); 
+const path = require('path'); // <-- necessário
 
 const app = express();
 
 app.use(express.json()); 
-
-// Configuração CORS essencial para permitir requisições de outras origens (como um arquivo HTML local)
 app.use(cors()); 
 
+// <-- ADICIONE ESTA LINHA
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// sincroniza banco
 sequelize.sync()
   .then(() => console.log("Banco sincronizado!"))
   .catch((err) => console.error("Erro ao sincronizar o banco:", err));
