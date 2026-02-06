@@ -20,10 +20,17 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
-sequelize
-  .authenticate()
-  .then(() => console.log("Banco conectado com sucesso"))
-  .catch((err) => console.error("Erro ao conectar ao banco", err));
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Banco conectado com sucesso 🚀");
+
+    await sequelize.sync({ alter: true });
+    console.log("Tabelas criadas / atualizadas com sucesso 🧱");
+  } catch (err) {
+    console.error("Erro ao conectar/sincronizar o banco", err);
+  }
+})();
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
