@@ -4,6 +4,11 @@ const sequelize = require("../config/database");
 const Pizza = sequelize.define(
   "Pizza",
   {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     nome: { type: DataTypes.STRING, allowNull: false },
     descricao: { type: DataTypes.TEXT, allowNull: false },
     imagem: { type: DataTypes.STRING, allowNull: false },
@@ -15,7 +20,7 @@ const Pizza = sequelize.define(
   {
     tableName: "pizzas",
     timestamps: true,
-  }
+  },
 );
 
 module.exports = Pizza;

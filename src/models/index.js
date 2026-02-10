@@ -23,10 +23,10 @@ fs.readdirSync(__dirname)
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log("Banco conectado com sucesso 🚀");
+    console.log("Banco conectado com sucesso");
 
     await sequelize.sync({ alter: true });
-    console.log("Tabelas criadas / atualizadas com sucesso 🧱");
+    console.log("Modelos sincronizados com o banco de dados");
   } catch (err) {
     console.error("Erro ao conectar/sincronizar o banco", err);
   }
