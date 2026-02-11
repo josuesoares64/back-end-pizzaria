@@ -1,12 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../middlewares/upload.js')
+
+const criarUpload = require('../middlewares/upload');
 const EsfihaController = require('../controllers/esfihaController.js');
 
 const esfihaController = new EsfihaController();
+const uploadEsfiha = criarUpload('esfihas');
 
-router.get('/esfiha', (req, res) => esfihaController.pegaTodos(req, res));
-router.post('/esfiha', upload.single('imagem'), (req, res) => esfihaController.criaNovo(req, res));
+router.get('/esfiha', esfihaController.pegaTodos.bind(esfihaController));
 
+router.post(
+  '/esfiha',
+  uploadEsfiha.single('imagem'),
+  esfihaController.criaNovo.bind(esfihaController)
+);
+
+router.delete(
+  '/esfiha/:id',
+  esfihaController.deletar.bind(esfihaController)
+);
 
 module.exports = router;

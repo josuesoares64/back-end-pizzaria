@@ -1,25 +1,41 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-// Configuração de armazenamento
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const categoria = req.body.categoria;
+function criarUpload(pasta) {
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            const uploadPath = path.join(__dirname, '..', 'uploads', pasta);
 
-        let folder = 'pizzas';
-        if (categoria === 'bebidas') folder = 'bebidas';
-        if (categoria === 'esfihas') folder = 'esfihas';
-        if (categoria === 'sobremesas') folder = 'sobremesas';
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
 
-        cb(null, path.join(__dirname, '..', 'uploads', folder)); 
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+            cb(null, uploadPath);
+        },
 
-// Inicializa o middleware de upload
-const upload = multer({ storage: storage });
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            const extension = path.extname(file.originalname);
+            cb(null, `${file.fieldname}-${uniqueSuffix}${extension}`);
+        }
+    });
 
-module.exports = upload;
+    const fileFilter = (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Apenas imagens são permitidas!'), false);
+        }
+    };
+
+    return multer({
+        storage,
+        fileFilter,
+        limits: {
+            fileSize: 5 * 1024 * 1024
+        }
+    });
+}
+
+module.exports = criarUpload;

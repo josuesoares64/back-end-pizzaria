@@ -1,12 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../middlewares/upload.js');
+
+const criarUpload = require('../middlewares/upload');
 const BebidaController = require('../controllers/bebidaController.js');
 
 const bebidaController = new BebidaController();
+const uploadBebida = criarUpload('bebidas');
 
-// CORREÇÃO: Use pegaTodos em vez de pega
-router.get('/bebida', (req, res) => bebidaController.pegaTodos(req, res));
-router.post('/bebida', upload.single('imagem'), (req, res) => bebidaController.criaNovo(req, res));
+router.get('/bebida', bebidaController.pegaTodos.bind(bebidaController));
+
+router.post(
+  '/bebida',
+  uploadBebida.single('imagem'),
+  bebidaController.criaNovo.bind(bebidaController)
+);
+
+router.delete(
+  '/bebida/:id',
+  bebidaController.deletar.bind(bebidaController)
+);
 
 module.exports = router;
