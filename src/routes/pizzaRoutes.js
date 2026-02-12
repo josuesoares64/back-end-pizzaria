@@ -9,15 +9,23 @@ const uploadPizza = criarUpload('pizzas');
 
 router.get('/pizzas', pizzaController.pegaTodos.bind(pizzaController));
 
+router.get('/pizzas/:id', pizzaController.pegaUm.bind(pizzaController));
+
 router.post(
   '/pizzas',
   uploadPizza.single('imagem'),
   pizzaController.criaNovo.bind(pizzaController)
 );
 
+router.put(
+  '/pizzas/:id',
+  pizzaController.atualizar.bind(pizzaController)
+)
+
 router.delete(
   '/pizzas/:id',
   pizzaController.deletar.bind(pizzaController)
 );
+
 
 module.exports = router;

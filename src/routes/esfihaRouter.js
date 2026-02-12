@@ -9,10 +9,17 @@ const uploadEsfiha = criarUpload('esfihas');
 
 router.get('/esfiha', esfihaController.pegaTodos.bind(esfihaController));
 
+router.get('/esfiha/:id', esfihaController.pegaUm.bind(esfihaController));
+
 router.post(
   '/esfiha',
   uploadEsfiha.single('imagem'),
   esfihaController.criaNovo.bind(esfihaController)
+);
+
+router.put(
+  '/esfiha/:id',
+  esfihaController.atualizar.bind(esfihaController)
 );
 
 router.delete(

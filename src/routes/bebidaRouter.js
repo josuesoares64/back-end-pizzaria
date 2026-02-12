@@ -9,10 +9,17 @@ const uploadBebida = criarUpload('bebidas');
 
 router.get('/bebida', bebidaController.pegaTodos.bind(bebidaController));
 
+router.get('/bebida/:id', bebidaController.pegaUm.bind(bebidaController));
+
 router.post(
   '/bebida',
   uploadBebida.single('imagem'),
   bebidaController.criaNovo.bind(bebidaController)
+);
+
+router.put(
+  '/bebida/:id',
+  bebidaController.atualizar.bind(bebidaController)
 );
 
 router.delete(

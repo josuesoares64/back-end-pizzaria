@@ -12,6 +12,19 @@ class Controller {
     }
   }
 
+  async pegaUm(req, res) {
+    const { id } = req.params;
+    try {
+      const umRegistro = await this.entidadeService.pegarPorId(id);
+      if (!umRegistro) {
+        return res.status(404).json({ message: "Registro não encontrado" });
+      }
+      return res.status(200).json(umRegistro);
+    } catch (erro) {
+      return res.status(500).json({ erro: erro.message });
+    }
+  }
+
   async criaNovo(req, res) {
     const dadosParaCriar = req.body;
     try {
@@ -23,6 +36,30 @@ class Controller {
       const novoProdutoCriado =
         await this.entidadeService.criaProduto(dadosParaCriar);
       return res.status(200).json(novoProdutoCriado);
+    } catch (erro) {
+      return res.status(500).json({ erro: erro.message });
+    }
+  }
+
+  async atualizar(req, res) {
+    const { id } = req.params;
+    const dadosAtualizados = req.body;
+
+    try {
+      const atualizado = await this.entidadeService.atualizaProduto(
+        dadosAtualizados,
+        id,
+      );
+
+      if (!atualizado) {
+        return res
+          .status(404)
+          .json({ message: `Registro com id ${id} não foi encontrado.` });
+      }
+
+      return res
+        .status(200)
+        .json({ message: `Registro atualizado com sucesso.` });
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
     }

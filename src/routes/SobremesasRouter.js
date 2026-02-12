@@ -9,10 +9,17 @@ const uploadSobremesa = criarUpload('sobremesas');
 
 router.get('/sobremesa', sobremesasController.pegaTodos.bind(sobremesasController));
 
+router.get('/sobremesa/:id', sobremesasController.pegaUm.bind(sobremesasController));
+
 router.post(
   '/sobremesa',
   uploadSobremesa.single('imagem'),
   sobremesasController.criaNovo.bind(sobremesasController)
+);
+
+router.put(
+  "/sobremesa/:id",
+  sobremesasController.atualizar.bind(sobremesasController)
 );
 
 router.delete(
