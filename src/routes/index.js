@@ -3,6 +3,7 @@ const pizza = require('./pizzaRoutes');
 const esfiha = require('./esfihaRouter')
 const sobremesa = require('./SobremesasRouter')
 const bebida = require('./bebidaRouter')
+const busca = require('./buscaRoutes')
 
 module.exports = (app) => {
     app.use(
@@ -10,6 +11,7 @@ module.exports = (app) => {
         pizza,
         esfiha,
         sobremesa,
-        bebida
+        bebida,
+        busca
     )
 }
