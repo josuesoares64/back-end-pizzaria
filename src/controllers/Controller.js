@@ -1,6 +1,7 @@
 class Controller {
-  constructor(entidadeService) {
+  constructor(entidadeService, categoria) {
     this.entidadeService = entidadeService; // corrigido
+    this.categoria = categoria;
   }
 
   async pegaTodos(req, res) {
@@ -29,8 +30,8 @@ class Controller {
     const dadosParaCriar = req.body;
     try {
       if (req.file) {
-        const categoria = req.body.categoria; // enviada no form-data
-        dadosParaCriar.imagem = `uploads/${categoria}/${req.file.filename}`;
+        // Agora this.categoria estará preenchido com 'sobremesas', 'pizzas', etc.
+        dadosParaCriar.imagem = `uploads/${this.categoria}/${req.file.filename}`;
       }
 
       const novoProdutoCriado =
@@ -46,6 +47,11 @@ class Controller {
     const dadosAtualizados = req.body;
 
     try {
+      // Verifica se uma nova imagem foi enviada no PUT
+      if (req.file) {
+        dadosAtualizados.imagem = `uploads/${this.categoria}/${req.file.filename}`;
+      }
+
       const atualizado = await this.entidadeService.atualizaProduto(
         dadosAtualizados,
         id,

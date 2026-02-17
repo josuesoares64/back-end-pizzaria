@@ -19,8 +19,9 @@ router.post(
 
 router.put(
   '/pizzas/:id',
+  uploadPizza.single('imagem'), // Adicione isso para conseguir ler o body e arquivos
   pizzaController.atualizar.bind(pizzaController)
-)
+);
 
 router.delete(
   '/pizzas/:id',

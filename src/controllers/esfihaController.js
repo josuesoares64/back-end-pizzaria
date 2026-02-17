@@ -5,7 +5,7 @@ const esfihaServices = new ServicesEsfiha();
 
 class EsfihaController extends Controller {
     constructor() {
-        super(esfihaServices);
+        super(esfihaServices, 'esfihas'); // Passa a categoria 'esfihas' para o Controller
     }
 }
 

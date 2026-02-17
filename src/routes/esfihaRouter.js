@@ -19,6 +19,7 @@ router.post(
 
 router.put(
   '/esfiha/:id',
+  uploadEsfiha.single('imagem'), // Adicione isso para conseguir ler o body e arquivos
   esfihaController.atualizar.bind(esfihaController)
 );
 

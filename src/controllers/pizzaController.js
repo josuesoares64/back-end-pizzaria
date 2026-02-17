@@ -5,7 +5,7 @@ const pizzaServices = new PizzaServices();
 
 class PizzaController extends Controller {
     constructor() {
-        super(pizzaServices);
+        super(pizzaServices, 'pizzas'); // Passa a categoria 'pizzas' para o Controller
     }
 
 }
