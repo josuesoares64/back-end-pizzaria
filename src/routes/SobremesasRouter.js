@@ -18,7 +18,8 @@ router.post(
 );
 
 router.put(
-  "/sobremesa/:id",
+  '/sobremesa/:id',
+  uploadSobremesa.single('imagem'), // Adicione isso para conseguir ler o body e arquivos
   sobremesasController.atualizar.bind(sobremesasController)
 );
 

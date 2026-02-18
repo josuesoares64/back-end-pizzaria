@@ -19,6 +19,7 @@ router.post(
 
 router.put(
   '/bebida/:id',
+  uploadBebida.single('imagem'), // Adicione isso para conseguir ler o body e arquivos
   bebidaController.atualizar.bind(bebidaController)
 );
 
