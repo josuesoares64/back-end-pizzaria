@@ -2,14 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const sequelize = require('./config/database'); 
-const path = require('path'); // <-- necessário
+const path = require('path');
 
 const app = express();
 
 app.use(express.json()); 
 app.use(cors()); 
 
-// <-- ADICIONE ESTA LINHA
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // sincroniza banco
