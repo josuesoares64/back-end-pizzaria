@@ -1,0 +1,29 @@
+import sequelize from "../../config/database";
+import Endereco from "./Endereco";
+import Order from "./Order";
+import OrderItem from "./orderItem";
+import Pizzaria from "./Pizzaria";
+import PizzariaUser from "./PizzariaUser";
+import Produto from "./Produto";
+import User from "./User";
+
+Pizzaria.initModel(sequelize);
+User.initModel(sequelize);    
+PizzariaUser.initModel(sequelize);
+Produto.initModel(sequelize);
+Order.initModel(sequelize); 
+OrderItem.initModel(sequelize);
+Endereco.initModel(sequelize);  
+
+( async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Banco conectado');
+        await sequelize.sync({alter: true});
+        console.log('Modelos sincronizados');
+    } catch (err) {
+        console.error('Erro ao conectar', err)
+    }
+})()
+
+export {Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto}
