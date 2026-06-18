@@ -26,4 +26,6 @@ Endereco.initModel(sequelize);
     }
 })()
 
-export {Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto}
+const db = { Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto };
+
+export default db;
