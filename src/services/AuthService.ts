@@ -52,7 +52,7 @@ class AuthService {
             telefone: dto.telefone,
         });
 
-        return { message: "Usuário criado com sucesso", userId: user.id };
+        return { message: "Usuário criado com sucesso", userId: user.nome };
     }
 }
 
