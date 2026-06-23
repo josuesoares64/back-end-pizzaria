@@ -15,9 +15,9 @@ const autenticado = (req: Request, res: Response, next: NextFunction) => {
         return res.status(401).send({ message: 'Token não informado' });
     }
 
-    const [, accessToken] = authHeader.split(' ');
+    const [scheme, accessToken] = authHeader.split(' ');
 
-    if(!accessToken) {
+    if(scheme !== 'Bearer' || !accessToken) {
         return res.status(401).send({ message: `Formato inválido. Use: Bearer <token>`})
     }
 

@@ -13,6 +13,18 @@ interface LoginBody {
     senha: string;
 }
 
+interface OwnerDTO {
+    nome: string;
+    email: string;
+    senha: string;
+    nomePizzaria: string;
+    slug: string;
+    telefone: string;
+    endereco: string;
+    role: string;
+    logo_url: string;
+}
+
 class AuthController {
     async login(req: Request<{}, {}, LoginBody>, res: Response) {
         console.log("Corpo da requisição", req.body);
@@ -44,6 +56,23 @@ class AuthController {
             console.error("Erro ao fazer registro:", error);
             return res.status(400).json({
                 error: "Erro ao registrar usuário",
+                detalhes: error instanceof Error ? error.message : "Erro desconhecido",
+            })
+        }
+    }
+
+    async registerOwner(req: Request<{}, {}, OwnerDTO>, res: Response) {
+        try{
+            const { nome, email, senha, nomePizzaria, slug, telefone, endereco, role, logo_url } = req.body
+            const Owner = await AuthService.registerOwner({
+                nome, email, senha, nomePizzaria, slug, telefone,endereco, logo_url,
+                role: "dono"
+            });
+            return res.status(201).json(Owner);
+        } catch (error) {
+            console.error("Erro ao fazer registro:", error);
+            return res.status(400).json({
+                error: "Erro ao registrar usuário e estabelecimento",
                 detalhes: error instanceof Error ? error.message : "Erro desconhecido",
             })
         }
