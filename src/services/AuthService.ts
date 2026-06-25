@@ -2,31 +2,7 @@ import { compare, hash } from "bcryptjs";
 import db from "../database/models";
 import { sign } from "jsonwebtoken";
 import sequelize from "../config/database";
-
-interface LoginDTO {
-    email: string;
-    senha: string;
-}
-
-interface OwnerDTO {
-    nome: string;
-    email: string;
-    senha: string;
-    nomePizzaria: string;
-    slug: string;
-    telefone: string;
-    endereco: string;
-    role: string;
-    logo_url: string;
-}
-
-interface RegisterDTO {
-    nome: string;
-    email: string;
-    senha: string;
-    role: string;
-    telefone?: string;
-}
+import { LoginDTO, OwnerDTO, RegisterDTO } from "../types/auth.dto";
 
 class AuthService {
     async login(dto: LoginDTO) {

@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import Pizzaria from "./Pizzaria";
 
 interface PizzariaUserAttributes {
     id?: string;
@@ -12,6 +13,7 @@ class PizzariaUser extends Model<PizzariaUserAttributes> {
     declare pizzaria_id: string;
     declare user_id: string;
     declare role: string;
+    declare pizzaria?: Pizzaria;
 
     static initModel = (sequelize: Sequelize): typeof PizzariaUser => {
         PizzariaUser.init(

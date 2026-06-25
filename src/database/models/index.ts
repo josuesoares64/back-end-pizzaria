@@ -1,7 +1,7 @@
 import sequelize from "../../config/database";
 import Endereco from "./Endereco";
 import Order from "./Order";
-import OrderItem from "./orderItem";
+import OrderItem from "./Order";
 import Pizzaria from "./Pizzaria";
 import PizzariaUser from "./PizzariaUser";
 import Produto from "./Produto";
@@ -13,7 +13,13 @@ PizzariaUser.initModel(sequelize);
 Produto.initModel(sequelize);
 Order.initModel(sequelize); 
 OrderItem.initModel(sequelize);
-Endereco.initModel(sequelize);  
+Endereco.initModel(sequelize); 
+
+PizzariaUser.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
+PizzariaUser.belongsTo(User, { foreignKey: 'user_id', as: 'usuario' });
+
+Pizzaria.hasMany(PizzariaUser, { foreignKey: 'pizzaria_id', as: 'vinculos' });
+User.hasMany(PizzariaUser, { foreignKey: 'user_id', as: 'vinculos' });
 
 ( async () => {
     try {

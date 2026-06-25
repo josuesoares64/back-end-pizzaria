@@ -1,32 +1,9 @@
 import { Request, Response } from "express";
 import AuthService from "../services/AuthService";
-
-interface RegisterBody {
-    nome: string;
-    email: string;
-    senha: string;
-    telefone?: string;
-}
-
-interface LoginBody {
-    email: string;
-    senha: string;
-}
-
-interface OwnerDTO {
-    nome: string;
-    email: string;
-    senha: string;
-    nomePizzaria: string;
-    slug: string;
-    telefone: string;
-    endereco: string;
-    role: string;
-    logo_url: string;
-}
+import { LoginDTO, OwnerDTO, RegisterDTO } from "../types/auth.dto";
 
 class AuthController {
-    async login(req: Request<{}, {}, LoginBody>, res: Response) {
+    async login(req: Request<{}, {}, LoginDTO>, res: Response) {
         console.log("Corpo da requisição", req.body);
         const { email, senha } = req.body;
         console.log("Email extraído:", email);
@@ -44,12 +21,12 @@ class AuthController {
         }
     }
 
-    async register( req: Request<{}, {}, RegisterBody>, res: Response) {
+    async register( req: Request<{}, {}, RegisterDTO>, res: Response) {
         try {
             const { nome, email, senha, telefone } = req.body
             const user = await AuthService.register({
                 nome, email, senha, telefone,
-                role: "CLIENTE"
+                role: "cliente"
             })
             return res.status(201).json(user);
         } catch (error) {
