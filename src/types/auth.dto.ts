@@ -24,3 +24,11 @@ export interface OwnerDTO {
     role: Role;
     logo_url: string;
 }
+
+export interface PizzariaUpdateDTO {
+    nome?: string;
+    slug?: string;
+    telefone?: string;
+    endereco?: string;
+    logo_url?: string;
+}

@@ -15,3 +15,4 @@ class PizzariaService {
         return vinculo.pizzaria;
     }
 }
+exports.default = new PizzariaService;
