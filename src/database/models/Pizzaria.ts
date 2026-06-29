@@ -8,7 +8,7 @@ interface PizzariaAttributes {
     telefone?: string;
     endereco?: string;
     logo_url?: string;
-
+    bloqueado?: boolean;
 }
 
 class Pizzaria extends Model<PizzariaAttributes> {
@@ -19,6 +19,7 @@ class Pizzaria extends Model<PizzariaAttributes> {
     declare telefone?: string;
     declare endereco?: string;
     declare logo_url?: string;
+    declare bloqueado: boolean;
 
     static initModel = (sequelize: Sequelize): typeof Pizzaria => {
         Pizzaria.init(
@@ -54,6 +55,11 @@ class Pizzaria extends Model<PizzariaAttributes> {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
+                bloqueado: {
+                    type: DataTypes.BOOLEAN,
+                    allowNull: false,
+                    defaultValue: false,
+                }
             },
             {
                 sequelize,

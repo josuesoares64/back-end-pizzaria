@@ -2,6 +2,16 @@ import db from "../database/models";
 import { PizzariaUpdateDTO } from "../types/auth.dto";
 
 class PizzariaService {
+
+        async listaPizzarias() {
+        const pizzarias = await db.Pizzaria.findAll({
+            where: { bloqueado: false },
+            attributes: ['nome', 'slug', 'telefone', 'endereco', 'logo_url']
+        })
+
+        return pizzarias
+    }
+
     async getMe(userId: string) {
         const vinculo = await db.PizzariaUser.findOne({
             where: { user_id: userId },
@@ -13,6 +23,10 @@ class PizzariaService {
         return vinculo.pizzaria
     }
 
+    async getSlug(slug: string) {
+        const slug
+    }
+
     async editarPizzaria(userId: string, dados: Partial<PizzariaUpdateDTO>) {
         const vinculo = await db.PizzariaUser.findOne({
             where: { user_id: userId },
@@ -20,6 +34,8 @@ class PizzariaService {
         });
 
         if (!vinculo || !vinculo.pizzaria) throw new Error("Pizzaria não encontrada para este usuário");
+
+        if (vinculo.role !== 'dono') throw new Error("Apenas o dono pode editar a pizzaria")
 
         if (dados.slug) {
             const existente = await db.Pizzaria.findOne({

@@ -1,4 +1,5 @@
 import sequelize from "../../config/database";
+import Categoria from "./Categoria";
 import Endereco from "./Endereco";
 import Order from "./Order";
 import OrderItem from "./OrderItem";
@@ -14,13 +15,18 @@ Produto.initModel(sequelize);
 Order.initModel(sequelize); 
 OrderItem.initModel(sequelize);
 Endereco.initModel(sequelize); 
+Categoria.initModel(sequelize);
 
 PizzariaUser.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
+Produto.belongsTo(Categoria, {foreignKey: 'categoria_id', as: 'categoria' })
+Categoria.belongsTo(Pizzaria, {foreignKey: 'pizzaria_id', as:'pizzaria'});
 PizzariaUser.belongsTo(User, { foreignKey: 'user_id', as: 'usuario' });
 OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'pedido' });
 OrderItem.belongsTo(Produto, { foreignKey: 'produto_id', as: 'produto' });
 
 Pizzaria.hasMany(PizzariaUser, { foreignKey: 'pizzaria_id', as: 'vinculos' });
+Categoria.hasMany(Produto, { foreignKey: 'produto_id', as: 'produtos'})
+Pizzaria.hasMany(Categoria, { foreignKey: 'pizzaria_id', as: 'categorias'})
 User.hasMany(PizzariaUser, { foreignKey: 'user_id', as: 'vinculos' });
 Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'itens'});
 

@@ -6,7 +6,7 @@ interface ProdutoAttributes {
     nome: string;
     descricao?: string;
     preco: number;
-    categoria: string;
+    categoria_id: string;
     imagem_url?: string;
     disponivel: boolean;
 }
@@ -17,7 +17,7 @@ class Produto extends Model<ProdutoAttributes> {
     declare nome: string;
     declare descricao?: string;
     declare preco: number;
-    declare categoria: string;
+    declare categoria_id: string;
     declare imagem_url?: string;
     declare disponivel: boolean;
 
@@ -49,10 +49,13 @@ class Produto extends Model<ProdutoAttributes> {
                     type: DataTypes.DECIMAL,
                     allowNull: false
                 },
-                categoria: {
-                    type: DataTypes.ENUM('pizza', 'esfiha', 'bebida', 'sobremesa'),
+                categoria_id: {
+                    type: DataTypes.UUID,
                     allowNull: false,
-                    
+                    references:{
+                        model: 'categorias',
+                        key: 'id'
+                    }
                 },
                 imagem_url: {
                     type: DataTypes.STRING,
