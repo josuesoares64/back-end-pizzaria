@@ -24,7 +24,7 @@ class PizzariaService {
     }
 
     async getSlug(slug: string) {
-        const slug
+        return
     }
 
     async editarPizzaria(userId: string, dados: Partial<PizzariaUpdateDTO>) {

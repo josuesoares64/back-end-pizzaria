@@ -25,7 +25,7 @@ OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'pedido' });
 OrderItem.belongsTo(Produto, { foreignKey: 'produto_id', as: 'produto' });
 
 Pizzaria.hasMany(PizzariaUser, { foreignKey: 'pizzaria_id', as: 'vinculos' });
-Categoria.hasMany(Produto, { foreignKey: 'produto_id', as: 'produtos'})
+Categoria.hasMany(Produto, { foreignKey: 'categoria_id', as: 'produtos'})
 Pizzaria.hasMany(Categoria, { foreignKey: 'pizzaria_id', as: 'categorias'})
 User.hasMany(PizzariaUser, { foreignKey: 'user_id', as: 'vinculos' });
 Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'itens'});
@@ -41,6 +41,5 @@ Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'itens'});
     }
 })()
 
-const db = { Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto };
-
+const db = { Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto, Categoria };
 export default db;
