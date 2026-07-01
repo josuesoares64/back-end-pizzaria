@@ -3,7 +3,7 @@ import { PizzariaUpdateDTO } from "../types/auth.dto";
 
 class PizzariaService {
 
-        async listaPizzarias() {
+    async listaPizzarias() {
         const pizzarias = await db.Pizzaria.findAll({
             where: { bloqueado: false },
             attributes: ['nome', 'slug', 'telefone', 'endereco', 'logo_url']
@@ -24,7 +24,26 @@ class PizzariaService {
     }
 
     async getSlug(slug: string) {
-        return
+        const pizzaria = await db.Pizzaria.findOne({
+            where: { slug, bloqueado: false },
+            attributes: ['nome', 'slug', 'telefone', 'endereco', 'logo_url'],
+            include: [{
+                model: db.Categoria, as: 'categorias',
+                where: { ativo: true },
+                required: false,
+                attributes: ['id', 'nome'],
+                include: [{
+                    model: db.Produto, as: 'produtos',
+                    where: { disponivel: true },
+                    required: false,
+                    attributes: ['id', 'nome', 'descricao', 'preco', 'imagem_url']
+                }]
+            }]
+        })
+
+        if (!pizzaria) throw new Error("Pizzaria não encontrada")
+
+        return pizzaria
     }
 
     async editarPizzaria(userId: string, dados: Partial<PizzariaUpdateDTO>) {

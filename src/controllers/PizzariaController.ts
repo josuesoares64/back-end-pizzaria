@@ -19,6 +19,21 @@ class PizzariaController {
         }
     }
 
+    getSlug = async (req: Request<{ slug: string }, {}, {}>, res: Response) => {
+        const { slug } = req.params;
+
+        try {
+            const pizzaria = await PizzariasService.getSlug(slug);
+            return res.status(200).json(pizzaria);
+        } catch (error) {
+            console.log("Erro ao buscar pizzaria pelo slug:", error);
+            return res.status(404).json({
+                error: "Erro ao buscar pizzaria pelo slug",
+                detalhes: error instanceof Error ? error.message : "Error desconhecido",
+            })
+        }
+    }
+
     listaPizzarias = async (req: Request, res: Response) => {
         try {
             const pizzarias = await PizzariasService.listaPizzarias();

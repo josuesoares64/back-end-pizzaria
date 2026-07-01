@@ -25,6 +25,12 @@ export interface OwnerDTO {
     logo_url: string;
 }
 
+export interface CategoriaDTO {
+    nome: string;
+    pizzaria_id: string;
+    ativo: boolean;
+}
+
 export interface PizzariaUpdateDTO {
     nome?: string;
     slug?: string;
