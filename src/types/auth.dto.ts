@@ -31,6 +31,14 @@ export interface CategoriaDTO {
     ativo: boolean;
 }
 
+export interface ProdutoDTO {
+    nome: string;
+    descricao?: string;
+    preco: number;
+    categoria_id: string;
+    imagem_url?: string;
+}
+
 export interface PizzariaUpdateDTO {
     nome?: string;
     slug?: string;

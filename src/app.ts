@@ -4,6 +4,7 @@ import './database/models/index';
 import authRoutes from './routes/auth.routes';
 import pizzaria from './routes/pizzaria.routes';
 import categoria from './routes/categoria.routes';
+import produto from './routes/produto.routes';
 
 export const app = express();
 
@@ -13,5 +14,6 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/pizzarias", pizzaria)
 app.use("/categorias", categoria);
+app.use("/produtos", produto);
 
 export default app;

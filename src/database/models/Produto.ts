@@ -2,24 +2,22 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 interface ProdutoAttributes {
     id?: string;
-    pizzaria_id: string;
     nome: string;
     descricao?: string;
     preco: number;
     categoria_id: string;
     imagem_url?: string;
-    disponivel: boolean;
+    disponivel?: boolean;
 }
 
 class Produto extends Model<ProdutoAttributes> {
     declare id: string;
-    declare pizzaria_id: string;
     declare nome: string;
     declare descricao?: string;
     declare preco: number;
     declare categoria_id: string;
     declare imagem_url?: string;
-    declare disponivel: boolean;
+    declare disponivel?: boolean;
 
     static initModel = (sequelize: Sequelize): typeof Produto => {
         Produto.init(
@@ -28,14 +26,6 @@ class Produto extends Model<ProdutoAttributes> {
                     type: DataTypes.UUID,
                     defaultValue: DataTypes.UUIDV4,
                     primaryKey: true,
-                },
-                pizzaria_id: {
-                    type: DataTypes.UUID,
-                    allowNull: false,
-                    references: {
-                        model: 'pizzarias',
-                        key: 'id'
-                    }
                 },
                 nome: {
                     type: DataTypes.STRING,

@@ -1,8 +1,30 @@
 import { Request, Response } from 'express';
 import CategoriaService from '../services/CategoriaServices';
 import db from '../database/models';
+import { Op } from 'sequelize';
 
 class CategoriaController {
+
+    async getCategoria(req: Request, res: Response) {
+        try {
+            const vinculo = await db.PizzariaUser.findOne({
+                where: {
+                    user_id: req.userId,
+                    role: { [Op.in]: ['dono', 'funcionario']}
+                }
+            });
+            
+            if (!vinculo) {
+                return res.status(403).json({ error: 'Usuário não tem acesso a nenhuma pizzaria' });
+            }
+
+            const categorias = await CategoriaService.getCategorias(vinculo.pizzaria_id);
+            res.status(200).json(categorias);
+        } catch (error) {
+            res.status(400).json({ error: (error as Error).message });
+        }
+    }
+
     async createCategoria(req: Request, res: Response) {
         try {
             const vinculo = await db.PizzariaUser.findOne({
