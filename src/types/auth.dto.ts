@@ -27,7 +27,7 @@ export interface OwnerDTO {
 
 export interface CategoriaDTO {
     nome: string;
-    pizzaria_id: string;
+    pizzaria_id?: string;
     ativo: boolean;
 }
 
