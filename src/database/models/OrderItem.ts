@@ -4,6 +4,9 @@ interface OrderItemAttributes {
     id?: string;
     order_id: string;
     produto_id: string;
+    produto_id_2?: string;
+    tamanho_id?: string;
+    borda_id?: string;
     quantidade: number;
     preco_unit: number;
 }
@@ -12,6 +15,9 @@ class OrderItem extends Model<OrderItemAttributes> {
     declare id: string;
     declare order_id: string;
     declare produto_id: string;
+    declare produto_id_2?: string;
+    declare tamanho_id?: string;
+    declare borda_id?: string;
     declare quantidade: number;
     declare preco_unit: number;
 
@@ -36,6 +42,30 @@ class OrderItem extends Model<OrderItemAttributes> {
                     allowNull: false,
                     references: {
                         model: 'produtos',
+                        key: 'id'
+                    }
+                },
+                produto_id_2: {
+                    type: DataTypes.UUID,
+                    allowNull: true,
+                    references: {
+                        model: 'produtos',
+                        key: 'id'
+                    }
+                },
+                tamanho_id: {
+                    type: DataTypes.UUID,
+                    allowNull: true,
+                    references: {
+                        model: 'tamanhos',
+                        key: 'id'
+                    }
+                },
+                borda_id: {
+                    type: DataTypes.UUID,
+                    allowNull: true,
+                    references: {
+                        model: 'bordas',
                         key: 'id'
                     }
                 },

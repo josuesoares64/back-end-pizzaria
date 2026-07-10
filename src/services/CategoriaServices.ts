@@ -1,5 +1,5 @@
 import db from "../database/models";
-import { CategoriaDTO } from "../types/auth.dto";
+import { CategoriaDTO } from "../types/categoria.dto";
 
 class CategoriaServices {
     async getCategorias(pizzariaId: string) {
@@ -11,7 +11,7 @@ class CategoriaServices {
     }
 
     async createCategoria(categoria: CategoriaDTO) {
-        if (!categoria.pizzaria_id) throw new Error("pizzaria_id é obrigatório");
+        if (!categoria.pizzaria_id) throw new Error("Pizzaria não vínculada");
 
         const categoriaExistente = await db.Categoria.findOne({ where: { nome: categoria.nome, pizzaria_id: categoria.pizzaria_id } });
         if (categoriaExistente) throw new Error("Categoria já existente");

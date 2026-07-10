@@ -24,25 +24,3 @@ export interface OwnerDTO {
     role: Role;
     logo_url: string;
 }
-
-export interface CategoriaDTO {
-    nome: string;
-    pizzaria_id?: string;
-    ativo: boolean;
-}
-
-export interface ProdutoDTO {
-    nome: string;
-    descricao?: string;
-    preco: number;
-    categoria_id: string;
-    imagem_url?: string;
-}
-
-export interface PizzariaUpdateDTO {
-    nome?: string;
-    slug?: string;
-    telefone?: string;
-    endereco?: string;
-    logo_url?: string;
-}

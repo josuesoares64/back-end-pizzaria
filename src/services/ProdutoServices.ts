@@ -1,5 +1,5 @@
 import db from "../database/models";
-import { ProdutoDTO } from "../types/auth.dto";
+import { ProdutoDTO } from "../types/produto.dto";
 
 class ProdutoServices {
     async getProduto(pizzariaId: string) {

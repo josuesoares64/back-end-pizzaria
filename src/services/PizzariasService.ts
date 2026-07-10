@@ -1,5 +1,5 @@
 import db from "../database/models";
-import { PizzariaUpdateDTO } from "../types/auth.dto";
+import { PizzariaUpdateDTO } from "../types/pizzaria.dto";
 
 class PizzariaService {
 
