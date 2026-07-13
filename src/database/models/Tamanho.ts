@@ -11,7 +11,7 @@ class Tamanho extends Model<TamanhoAttributes> {
     declare id: string;
     declare nome: string;
     declare pizzaria_id: string;
-    declare ordem?: number;
+    declare ordem: number;
 
     static initModel = (sequelize: Sequelize): typeof Tamanho => {
         Tamanho.init(

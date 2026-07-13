@@ -57,5 +57,5 @@ Produto.hasMany(ProdutoPreco, { foreignKey: 'produto_id', as: 'precos' });
     }
 })()
 
-const db = { Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto, Categoria, Tamanho, Borda, ProdutoPreco };
+const db = { sequelize, Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto, Categoria, Tamanho, Borda, ProdutoPreco };
 export default db;
