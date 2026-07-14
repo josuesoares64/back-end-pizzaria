@@ -88,6 +88,46 @@ class TamanhoService {
             throw error;
         }
     }
+
+    async updateTamanho(id: string, nome: string, pizzariaId: string) {
+        const tamanhoExistente = await db.Tamanho.findOne({
+            where: { id, pizzaria_id: pizzariaId }
+        });
+        if (!tamanhoExistente) throw new Error("Tamanho não encontrado.");
+
+        await db.Tamanho.update(
+            { nome },
+            { where: { id, pizzaria_id: pizzariaId } }
+        );
+
+        const tamanhoAtualizado = await db.Tamanho.findByPk(id);
+        return tamanhoAtualizado;
+    }
+
+    async deleteTamanho(id: string, pizzariaId: string) {
+        const tamanhoExistente = await db.Tamanho.findOne({
+            where: { id, pizzaria_id: pizzariaId }
+        });
+
+        if (!tamanhoExistente) throw new Error("Tamanho não encontrado.");
+
+        const precosVinculados = await db.ProdutoPreco.count({
+            where: { tamanho_id: id }
+        });
+
+        if (precosVinculados > 0) {
+            throw new Error(
+                "Não é possível excluir este tamanho porque existem produtos com preço cadastrado para ele."
+            );
+        }
+
+        await db.Tamanho.destroy({
+            where: { id, pizzaria_id: pizzariaId }
+        });
+
+        return { message: "Tamanho excluído com sucesso." };
+    }
+
 }
 
 export default new TamanhoService();

@@ -7,5 +7,7 @@ const router = Router();
 router.get('/', autenticado, TamanhoController.getTamanho)
 router.post('/', autenticado, TamanhoController.createTamanho)
 router.patch("/:id", autenticado, TamanhoController.reorganizarOrdem);
+router.patch("/:id/nome", autenticado, TamanhoController.upadateTamanho);
+router.delete("/:id", autenticado, TamanhoController.deleteTamanho)
 
 export default router;

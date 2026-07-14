@@ -1,5 +1,6 @@
 export interface BordaDTO {
     nome: string;
-    preco: string;
+    preco: number;
     pizzaria_id: string;
+    ativo: boolean;
 }

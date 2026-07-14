@@ -49,7 +49,7 @@ class TamanhoController {
             return res.status(401).json({ error: "Não autenticado" });
         }
 
-        const { id } = req.params;
+        const { id } = req.params as { id: string};
         const { ordemNova } = req.body;
 
         try {
@@ -72,6 +72,63 @@ class TamanhoController {
             });
         }
     }
+
+    async upadateTamanho(req: Request, res: Response) {
+        if (!req.userId) {
+            return res.status(401).json({ error: "Não aunteticado " });
+        }
+
+        const { id } = req.params as { id: string};
+        const { nome } = req.body;
+
+        try {
+            const vinculo = await db.PizzariaUser.findOne({
+                where: { user_id: req.userId, role: 'dono' }
+            });
+
+            if (!vinculo) {
+                return res.status(403).json({ error: "Usuário não é dono desse estabelecimento" })
+            }
+
+            const Novonome = await TamanhoService.updateTamanho(id, nome, vinculo.pizzaria_id);
+            return res.status(200).json(Novonome);
+
+        } catch (error) {
+            console.log("Erro ao mudar nome:", error);
+            return res.status(400).json({
+                error: "Erro ao mudar nome",
+                detalhes: error instanceof Error ? error.message : "Erro desconhecido",
+            });
+        }
+    }
+
+    async deleteTamanho(req: Request, res: Response) {
+    if (!req.userId) {
+        return res.status(401).json({ error: "Não autenticado" });
+    }
+
+    const { id } = req.params;
+
+    try {
+        const vinculo = await db.PizzariaUser.findOne({
+            where: { user_id: req.userId, role: 'dono' }
+        });
+
+        if (!vinculo) {
+            return res.status(403).json({ error: "Usuário não é dono desse estabelecimento" });
+        }
+
+        const resultado = await TamanhoService.deleteTamanho(id as string, vinculo.pizzaria_id);
+        return res.status(200).json(resultado);
+
+    } catch (error) {
+        console.log("Erro ao excluir tamanho:", error);
+        return res.status(400).json({
+            error: "Erro ao excluir tamanho",
+            detalhes: error instanceof Error ? error.message : "Erro desconhecido",
+        });
+    }
+}
 }
 
 export default new TamanhoController();
