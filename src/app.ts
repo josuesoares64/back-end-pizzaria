@@ -5,7 +5,8 @@ import authRoutes from './routes/auth.routes';
 import pizzaria from './routes/pizzaria.routes';
 import categoria from './routes/categoria.routes';
 import produto from './routes/produto.routes';
-import tamanho from './routes/tamanho.routes'
+import tamanho from './routes/tamanho.routes';
+import borda from './routes/borda.routes'
 
 export const app = express();
 
@@ -17,5 +18,6 @@ app.use("/pizzarias", pizzaria)
 app.use("/categorias", categoria);
 app.use("/produtos", produto);
 app.use("/tamanhos", tamanho)
+app.use("/borda", borda)
 
 export default app;
