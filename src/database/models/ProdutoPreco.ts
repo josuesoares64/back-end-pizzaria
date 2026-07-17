@@ -4,14 +4,14 @@ interface ProdutoPrecoAttributes {
     id?: string;
     produto_id: string;
     tamanho_id: string;
-    preco: number;
+    preco: number | null;
 }
 
 class ProdutoPreco extends Model<ProdutoPrecoAttributes> {
     declare id: string;
     declare produto_id: string;
     declare tamanho_id: string;
-    declare preco: number;
+    declare preco: number| null;
 
     static initModel = (sequelize: Sequelize): typeof ProdutoPreco => {
         ProdutoPreco.init(
@@ -38,8 +38,8 @@ class ProdutoPreco extends Model<ProdutoPrecoAttributes> {
                     }
                 },
                 preco: {
-                    type: DataTypes.DECIMAL,
-                    allowNull: false,
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: true,
                 }
             },
             {

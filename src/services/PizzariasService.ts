@@ -36,14 +36,37 @@ class PizzariaService {
                     model: db.Produto, as: 'produtos',
                     where: { disponivel: true },
                     required: false,
-                    attributes: ['id', 'nome', 'descricao', 'preco', 'imagem_url']
+                    attributes: ['id', 'nome', 'descricao', 'preco', 'tipo', 'imagem_url'],
+                    include: [{
+                        model: db.ProdutoPreco, as: 'precos',
+                        required: false,
+                        attributes: ['id', 'preco'],
+                        include: [{
+                            model: db.Tamanho, as: 'tamanho',
+                            attributes: ['id', 'nome', 'ordem']
+                        }]
+                    }]
                 }]
             }]
         })
 
         if (!pizzaria) throw new Error("Pizzaria não encontrada")
 
-        return pizzaria
+        const pizzariaJson: any = pizzaria.toJSON();
+        pizzariaJson.categorias = pizzariaJson.categorias.map((categoria: any) => ({
+            ...categoria,
+            produtos: categoria.produtos.map((produto: any) => {
+                const { tipo, preco, precos, ...resto } = produto;
+
+                if (tipo === 'pizza') {
+                    return { ...resto, precos };
+                }
+
+                return { ...resto, preco };
+            })
+        }));
+
+        return pizzariaJson;
     }
 
     async editarPizzaria(userId: string, dados: Partial<PizzariaUpdateDTO>) {
