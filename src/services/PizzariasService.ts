@@ -27,27 +27,35 @@ class PizzariaService {
         const pizzaria = await db.Pizzaria.findOne({
             where: { slug, bloqueado: false },
             attributes: ['nome', 'slug', 'telefone', 'endereco', 'logo_url'],
-            include: [{
-                model: db.Categoria, as: 'categorias',
-                where: { ativo: true },
-                required: false,
-                attributes: ['id', 'nome'],
-                include: [{
-                    model: db.Produto, as: 'produtos',
-                    where: { disponivel: true },
+            include: [
+                {
+                    model: db.Categoria, as: 'categorias',
+                    where: { ativo: true },
                     required: false,
-                    attributes: ['id', 'nome', 'descricao', 'preco', 'tipo', 'imagem_url'],
+                    attributes: ['id', 'nome'],
                     include: [{
-                        model: db.ProdutoPreco, as: 'precos',
+                        model: db.Produto, as: 'produtos',
+                        where: { disponivel: true },
                         required: false,
-                        attributes: ['id', 'preco'],
+                        attributes: ['id', 'nome', 'descricao', 'preco', 'tipo', 'imagem_url'],
                         include: [{
-                            model: db.Tamanho, as: 'tamanho',
-                            attributes: ['id', 'nome', 'ordem']
+                            model: db.ProdutoPreco, as: 'precos',
+                            required: false,
+                            attributes: ['id', 'preco'],
+                            include: [{
+                                model: db.Tamanho, as: 'tamanho',
+                                attributes: ['id', 'nome', 'ordem']
+                            }]
                         }]
                     }]
-                }]
-            }]
+                },
+                {
+                    model: db.Borda, as: 'bordas',
+                    where: { ativo: true },
+                    required: false,
+                    attributes: ['id', 'nome', 'preco']
+                }
+            ]
         })
 
         if (!pizzaria) throw new Error("Pizzaria não encontrada")

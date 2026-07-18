@@ -51,7 +51,7 @@ class Produto extends Model<ProdutoAttributes> {
                 categoria_id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    references:{
+                    references: {
                         model: 'categorias',
                         key: 'id'
                     }
@@ -72,7 +72,7 @@ class Produto extends Model<ProdutoAttributes> {
                 underscored: true,
                 validate: {
                     precoObrigatorioParaSimples() {
-                        if (this.tipo === 'simples' && this.preco === null) {
+                        if (this.tipo === 'simples' && (this.preco === null || this.preco === undefined)) {
                             throw new Error('Produto do tipo "simples" exige preço.');
                         }
                     }

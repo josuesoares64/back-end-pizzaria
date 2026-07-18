@@ -29,10 +29,17 @@ class ProdutoServices {
         });
         if (produtoExistente) throw new Error("Produto já existente");
 
+        const tipo = produto.tipo ?? 'simples';
+
+        if (tipo === 'pizza' && produto.preco) {
+            throw new Error('Produto do tipo "pizza" não deve ter preço único — use o cadastro de preços por tamanho.');
+        }
+
         const novoProduto = await db.Produto.create({
             nome: produto.nome,
             descricao: produto.descricao,
-            preco: produto.preco,
+            preco: tipo === 'pizza' ? undefined : produto.preco,
+            tipo,
             categoria_id: produto.categoria_id,
             imagem_url: produto.imagem_url
         });

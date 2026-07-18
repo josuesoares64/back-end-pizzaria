@@ -24,6 +24,7 @@ class ProdutoController {
             res.status(400).json({ error: (error as Error).message });
         }
     }
+    
     async createProduto(req: Request, res: Response) {
         try {
             const vinculo = await db.PizzariaUser.findOne({
@@ -37,6 +38,7 @@ class ProdutoController {
                 nome: req.body.nome,
                 descricao: req.body.descricao,
                 preco: req.body.preco,
+                tipo: req.body.tipo,
                 categoria_id: req.body.categoria_id,
                 imagem_url: req.body.imagem_url
             }, vinculo.pizzaria_id);
