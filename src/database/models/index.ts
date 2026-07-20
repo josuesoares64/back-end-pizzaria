@@ -36,6 +36,7 @@ Tamanho.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 Borda.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 ProdutoPreco.belongsTo(Produto, { foreignKey: 'produto_id', as: 'produto' });
 ProdutoPreco.belongsTo(Tamanho, { foreignKey: 'tamanho_id', as: 'tamanho' });
+Endereco.belongsTo(User, { as: "cliente", foreignKey: "cliente_id" });
 
 Pizzaria.hasMany(PizzariaUser, { foreignKey: 'pizzaria_id', as: 'vinculos' });
 Categoria.hasMany(Produto, { foreignKey: 'categoria_id', as: 'produtos' })
@@ -45,6 +46,7 @@ Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'itens' });
 Pizzaria.hasMany(Tamanho, { foreignKey: 'pizzaria_id', as: 'tamanhos' });
 Pizzaria.hasMany(Borda, { foreignKey: 'pizzaria_id', as: 'bordas' });
 Produto.hasMany(ProdutoPreco, { foreignKey: 'produto_id', as: 'precos' });
+User.hasOne(Endereco, { as: "endereco", foreignKey: "cliente_id" });
 
 (async () => {
     try {

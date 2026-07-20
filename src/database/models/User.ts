@@ -6,7 +6,7 @@ interface UserAttributes {
     email: string;
     senha_hash: string;
     role: string;
-    telefone?: string;
+    telefone: string;
 }
 
 class User extends Model<UserAttributes> {
@@ -15,7 +15,7 @@ class User extends Model<UserAttributes> {
     declare email: string;
     declare senha_hash: string;
     declare role: string;
-    declare telefone?: string;
+    declare telefone: string;
 
     static initModel = (sequelize: Sequelize): typeof User => {
         User.init(
@@ -44,7 +44,7 @@ class User extends Model<UserAttributes> {
                 },
                 telefone: {
                     type: DataTypes.STRING,
-                    allowNull: true
+                    allowNull: false
                 }
             },
             {

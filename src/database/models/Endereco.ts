@@ -3,25 +3,23 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 interface EnderecoAttributes {
     id?: string;
     user_id: string;
+    cep: string;
     rua: string;
     numero: string;
     bairro: string;
-    cidade: string;
-    estado: string;
-    cep: string;
-    principal: boolean;
+    complemento?: string;
+    referencia?: string;
 }
 
 class Endereco extends Model<EnderecoAttributes> {
     declare id: string;
     declare user_id: string;
+    declare cep: string;
     declare rua: string;
     declare numero: string;
     declare bairro: string;
-    declare cidade: string;
-    declare estado: string;
-    declare cep: string;
-    declare principal: boolean;
+    declare complemento?: string;
+    declare referencia?: string;
 
     static initModel = (sequelize: Sequelize): typeof Endereco => {
         Endereco.init(
@@ -34,10 +32,10 @@ class Endereco extends Model<EnderecoAttributes> {
                 user_id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    references: {
-                        model: 'users',
-                        key: 'id'
-                    }
+                },
+                cep: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
                 },
                 rua: {
                     type: DataTypes.STRING,
@@ -51,32 +49,24 @@ class Endereco extends Model<EnderecoAttributes> {
                     type: DataTypes.STRING,
                     allowNull: false,
                 },
-                cidade: {
+                complemento: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
-                estado: {
+                referencia: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
-                cep: {
-                    type: DataTypes.STRING,
-                    allowNull: false,
-                },
-                principal: {
-                    type: DataTypes.BOOLEAN,
-                    defaultValue: false
-                }
             },
             {
                 sequelize,
-                modelName: 'Endereco',
-                tableName: 'enderecos',
-                underscored: true
+                modelName: "Endereco",
+                tableName: "enderecos",
+                underscored: true,
             }
         );
-        return Endereco
-    }
+        return Endereco;
+    };
 }
 
 export default Endereco;
