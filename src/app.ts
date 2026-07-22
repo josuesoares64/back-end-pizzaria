@@ -8,7 +8,8 @@ import produto from './routes/produto.routes';
 import tamanho from './routes/tamanho.routes';
 import borda from './routes/borda.routes';
 import produtoPreco from './routes/produtoPreci.routes';
-import endereco from './routes/endereco.routes'
+import endereco from './routes/endereco.routes';
+import order from './routes/order.routes'
 
 export const app = express();
 
@@ -23,5 +24,6 @@ app.use("/tamanhos", tamanho);
 app.use("/borda", borda);
 app.use("/produtos", produtoPreco);
 app.use("/enderecos", endereco)
+app.use("/orders", order)
 
 export default app;

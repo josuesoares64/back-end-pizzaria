@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import Categoria from "./Categoria";
 
 export type TipoProduto = 'simples' | 'pizza';
 
@@ -22,6 +23,9 @@ class Produto extends Model<ProdutoAttributes> {
     declare categoria_id: string;
     declare imagem_url?: string;
     declare disponivel?: boolean;
+
+    // associação (não é coluna do banco, só tipagem pra o TS reconhecer o include)
+    declare categoria?: Categoria;
 
     static initModel = (sequelize: Sequelize): typeof Produto => {
         Produto.init(

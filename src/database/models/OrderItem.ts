@@ -8,7 +8,9 @@ interface OrderItemAttributes {
     tamanho_id?: string;
     borda_id?: string;
     quantidade: number;
-    preco_unit: number;
+    preco_unitario: number;
+    subtotal: number;
+    observacoes?: string;
 }
 
 class OrderItem extends Model<OrderItemAttributes> {
@@ -19,7 +21,9 @@ class OrderItem extends Model<OrderItemAttributes> {
     declare tamanho_id?: string;
     declare borda_id?: string;
     declare quantidade: number;
-    declare preco_unit: number;
+    declare preco_unitario: number;
+    declare subtotal: number;
+    declare observacoes?: string;
 
     static initModel = (sequelize: Sequelize): typeof OrderItem => {
         OrderItem.init(
@@ -32,60 +36,48 @@ class OrderItem extends Model<OrderItemAttributes> {
                 order_id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    references: {
-                        model: 'orders',
-                        key: 'id'
-                    }
                 },
                 produto_id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    references: {
-                        model: 'produtos',
-                        key: 'id'
-                    }
                 },
                 produto_id_2: {
                     type: DataTypes.UUID,
                     allowNull: true,
-                    references: {
-                        model: 'produtos',
-                        key: 'id'
-                    }
                 },
                 tamanho_id: {
                     type: DataTypes.UUID,
                     allowNull: true,
-                    references: {
-                        model: 'tamanhos',
-                        key: 'id'
-                    }
                 },
                 borda_id: {
                     type: DataTypes.UUID,
                     allowNull: true,
-                    references: {
-                        model: 'bordas',
-                        key: 'id'
-                    }
                 },
                 quantidade: {
                     type: DataTypes.INTEGER,
                     allowNull: false,
                 },
-                preco_unit: {
-                    type: DataTypes.DECIMAL,
-                    allowNull: false
-                }
+                preco_unitario: {
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: false,
+                },
+                subtotal: {
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: false,
+                },
+                observacoes: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
             },
             {
                 sequelize,
-                modelName: 'OrderItem',
-                tableName: 'order_items',
+                modelName: "OrderItem",
+                tableName: "order_items",
                 underscored: true,
             }
         );
-        return OrderItem
+        return OrderItem;
     }
 }
 

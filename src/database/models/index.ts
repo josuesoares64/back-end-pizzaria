@@ -27,26 +27,31 @@ PizzariaUser.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 Produto.belongsTo(Categoria, { foreignKey: 'categoria_id', as: 'categoria' })
 Categoria.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 PizzariaUser.belongsTo(User, { foreignKey: 'user_id', as: 'usuario' });
-OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'pedido' });
-OrderItem.belongsTo(Produto, { foreignKey: 'produto_id', as: 'produto' });
 OrderItem.belongsTo(Produto, { foreignKey: 'produto_id_2', as: 'produtoSegundoSabor' });
-OrderItem.belongsTo(Tamanho, { foreignKey: 'tamanho_id', as: 'tamanho' });
-OrderItem.belongsTo(Borda, { foreignKey: 'borda_id', as: 'borda' });
 Tamanho.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 Borda.belongsTo(Pizzaria, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 ProdutoPreco.belongsTo(Produto, { foreignKey: 'produto_id', as: 'produto' });
 ProdutoPreco.belongsTo(Tamanho, { foreignKey: 'tamanho_id', as: 'tamanho' });
 Endereco.belongsTo(User, { as: "cliente", foreignKey: "cliente_id" });
+Order.belongsTo(User, { foreignKey: "user_id", as: "cliente" });
+Order.belongsTo(Pizzaria, { foreignKey: "pizzaria_id", as: "pizzaria" });
+OrderItem.belongsTo(Order, { foreignKey: "order_id", as: "pedido" });
+OrderItem.belongsTo(Produto, { foreignKey: "produto_id", as: "produto" });
+OrderItem.belongsTo(Tamanho, { foreignKey: "tamanho_id", as: "tamanho" });
+OrderItem.belongsTo(Borda, { foreignKey: "borda_id", as: "borda" });
 
 Pizzaria.hasMany(PizzariaUser, { foreignKey: 'pizzaria_id', as: 'vinculos' });
 Categoria.hasMany(Produto, { foreignKey: 'categoria_id', as: 'produtos' })
 Pizzaria.hasMany(Categoria, { foreignKey: 'pizzaria_id', as: 'categorias' })
 User.hasMany(PizzariaUser, { foreignKey: 'user_id', as: 'vinculos' });
-Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'itens' });
 Pizzaria.hasMany(Tamanho, { foreignKey: 'pizzaria_id', as: 'tamanhos' });
 Pizzaria.hasMany(Borda, { foreignKey: 'pizzaria_id', as: 'bordas' });
 Produto.hasMany(ProdutoPreco, { foreignKey: 'produto_id', as: 'precos' });
 User.hasOne(Endereco, { as: "endereco", foreignKey: "cliente_id" });
+User.hasMany(Order, { foreignKey: "user_id", as: "pedidos" });
+Pizzaria.hasMany(Order, { foreignKey: "pizzaria_id", as: "pedidos" });
+Order.hasMany(OrderItem, { foreignKey: "order_id", as: "itens" });
+Produto.hasMany(OrderItem, { foreignKey: "produto_id", as: "itensPedido" });
 
 (async () => {
     try {

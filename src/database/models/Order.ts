@@ -1,23 +1,43 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
+export type OrderStatus =
+    | "pendente"
+    | "confirmado"
+    | "preparando"
+    | "saiu_para_entrega"
+    | "entregue"
+    | "cancelado";
+
 interface OrderAttributes {
     id?: string;
-    pizzaria_id: string;
     user_id: string;
-    status: string;
+    pizzaria_id: string;
+    status?: OrderStatus;
     total: number;
-    observacao?: string;
-    endereco_entrega?: string;
+    forma_pagamento: string;
+    observacoes?: string;
+    endereco_cep: string;
+    endereco_rua: string;
+    endereco_numero: string;
+    endereco_bairro: string;
+    endereco_complemento?: string;
+    endereco_referencia?: string;
 }
 
 class Order extends Model<OrderAttributes> {
     declare id: string;
-    declare pizzaria_id: string;
     declare user_id: string;
-    declare status: string;
+    declare pizzaria_id: string;
+    declare status: OrderStatus;
     declare total: number;
-    declare observacao?: string;
-    declare endereco_entrega?: string;
+    declare forma_pagamento: string;
+    declare observacoes?: string;
+    declare endereco_cep: string;
+    declare endereco_rua: string;
+    declare endereco_numero: string;
+    declare endereco_bairro: string;
+    declare endereco_complemento?: string;
+    declare endereco_referencia?: string;
 
     static initModel = (sequelize: Sequelize): typeof Order => {
         Order.init(
@@ -27,48 +47,71 @@ class Order extends Model<OrderAttributes> {
                     defaultValue: DataTypes.UUIDV4,
                     primaryKey: true,
                 },
-                pizzaria_id: {
-                    type: DataTypes.UUID,
-                    allowNull: false,
-                    references: {
-                        model: 'pizzarias',
-                        key: 'id'
-                    }
-                },
                 user_id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    references: {
-                        model: 'users',
-                        key: 'id'
-                    }
+                },
+                pizzaria_id: {
+                    type: DataTypes.UUID,
+                    allowNull: false,
                 },
                 status: {
-                    type: DataTypes.ENUM('pendente', 'confirmado', 'em_preparo', 'entregue', 'cancelado'),
+                    type: DataTypes.ENUM(
+                        "pendente",
+                        "confirmado",
+                        "preparando",
+                        "saiu_para_entrega",
+                        "entregue",
+                        "cancelado"
+                    ),
                     allowNull: false,
-                    defaultValue: 'pendente'
+                    defaultValue: "pendente",
                 },
                 total: {
-                    type: DataTypes.DECIMAL,
-                    allowNull: false
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: false,
                 },
-                observacao: {
+                forma_pagamento: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                observacoes: {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
-                endereco_entrega: {
+                endereco_cep: {
                     type: DataTypes.STRING,
-                    allowNull: true
-                }
+                    allowNull: false,
+                },
+                endereco_rua: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                endereco_numero: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                endereco_bairro: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                endereco_complemento: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
+                endereco_referencia: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
             },
             {
                 sequelize,
-                modelName: 'Order',
-                tableName: 'orders',
+                modelName: "Order",
+                tableName: "orders",
                 underscored: true,
             }
         );
-        return Order
+        return Order;
     }
 }
 
