@@ -36,6 +36,11 @@ Pizzaria.initModel = (sequelize) => {
             type: sequelize_1.DataTypes.STRING,
             allowNull: true,
         },
+        bloqueado: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        }
     }, {
         sequelize,
         modelName: "Pizzaria",

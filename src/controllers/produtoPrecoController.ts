@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import produtoPrecoService from '../services/produtoPrecoService';
 import db from '../database/models';
+import { Op } from 'sequelize';
 
-const getPizzariaIdDono = async (userId: string, res: Response): Promise<string | null> => {
-    const vinculo = await db.PizzariaUser.findOne({ where: { user_id: userId } });
+const getPizzariaIdComAcesso = async (
+    userId: string,
+    roles: string[],
+    res: Response
+): Promise<string | null> => {
+    const vinculo = await db.PizzariaUser.findOne({
+        where: { user_id: userId, role: { [Op.in]: roles } }
+    });
 
     if (!vinculo) {
-        res.status(403).json({ error: 'Usuário sem vínculo com nenhuma pizzaria.' });
-        return null;
-    }
-
-    if (vinculo.role !== 'dono') {
-        res.status(403).json({ error: 'Apenas o dono pode gerenciar preços de produtos.' });
+        res.status(403).json({ error: 'Usuário não tem acesso a esse recurso.' });
         return null;
     }
 
@@ -27,7 +29,7 @@ const vincularTamanhos = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'tamanho_ids deve ser uma lista não vazia.' });
         }
 
-        const pizzariaId = await getPizzariaIdDono(req.userId as string, res);
+        const pizzariaId = await getPizzariaIdComAcesso(req.userId as string, ['dono'], res);
         if (!pizzariaId) return;
 
         const resultado = await produtoPrecoService.vincularTamanhos(produtoId, tamanho_ids, pizzariaId);
@@ -41,7 +43,7 @@ const desvincularTamanho = async (req: Request, res: Response) => {
     try {
         const { produtoId, tamanhoId } = req.params as { produtoId: string; tamanhoId: string };
 
-        const pizzariaId = await getPizzariaIdDono(req.userId as string, res);
+        const pizzariaId = await getPizzariaIdComAcesso(req.userId as string, ['dono'], res);
         if (!pizzariaId) return;
 
         await produtoPrecoService.desvincularTamanho(produtoId, tamanhoId, pizzariaId);
@@ -55,7 +57,7 @@ const listarPrecos = async (req: Request, res: Response) => {
     try {
         const { produtoId } = req.params as { produtoId: string };
 
-        const pizzariaId = await getPizzariaIdDono(req.userId as string, res);
+        const pizzariaId = await getPizzariaIdComAcesso(req.userId as string, ['dono', 'funcionario'], res);
         if (!pizzariaId) return;
 
         const resultado = await produtoPrecoService.listarPrecos(produtoId, pizzariaId);
@@ -74,7 +76,7 @@ const atualizarPrecos = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'precos deve ser uma lista não vazia.' });
         }
 
-        const pizzariaId = await getPizzariaIdDono(req.userId as string, res);
+        const pizzariaId = await getPizzariaIdComAcesso(req.userId as string, ['dono'], res);
         if (!pizzariaId) return;
 
         const resultado = await produtoPrecoService.atualizarPrecos(produtoId, precos, pizzariaId);

@@ -29,7 +29,7 @@ User.initModel = (sequelize) => {
         },
         telefone: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         }
     }, {
         sequelize,

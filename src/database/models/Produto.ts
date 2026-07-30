@@ -12,6 +12,7 @@ interface ProdutoAttributes {
     categoria_id: string;
     imagem_url?: string;
     disponivel?: boolean;
+    excluido?: boolean;
 }
 
 class Produto extends Model<ProdutoAttributes> {
@@ -23,8 +24,8 @@ class Produto extends Model<ProdutoAttributes> {
     declare categoria_id: string;
     declare imagem_url?: string;
     declare disponivel?: boolean;
+    declare excluido?: boolean;
 
-    // associação (não é coluna do banco, só tipagem pra o TS reconhecer o include)
     declare categoria?: Categoria;
 
     static initModel = (sequelize: Sequelize): typeof Produto => {
@@ -67,6 +68,10 @@ class Produto extends Model<ProdutoAttributes> {
                 disponivel: {
                     type: DataTypes.BOOLEAN,
                     defaultValue: true
+                },
+                excluido: {
+                    type: DataTypes.BOOLEAN,
+                    defaultValue: false
                 }
             },
             {

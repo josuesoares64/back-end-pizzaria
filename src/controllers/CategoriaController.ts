@@ -60,7 +60,7 @@ class CategoriaController {
             if (!vinculo) {
                 return res.status(403).json({ error: 'Usuário não tem acesso a nenhuma pizzaria' });
             }
-            
+
             const categoriaAtualizada = await CategoriaService.updateCategoria(id, {
                 nome: req.body.nome,
                 ativo: req.body.ativo,
@@ -77,7 +77,7 @@ class CategoriaController {
             const vinculo = await db.PizzariaUser.findOne({
                 where: {
                     user_id: req.userId,
-                    role: 'funcionario'
+                    role: { [Op.in]: ['dono', 'funcionario'] }
                 }
             });
 
@@ -85,7 +85,7 @@ class CategoriaController {
                 return res.status(403).json({ error: 'Usuário não tem acesso a nenhuma pizzaria' });
             }
 
-            const categoriaAtualizada = await CategoriaService.updateCategoriaStatus(id, req.body.ativo, vinculo.pizzaria_id); 
+            const categoriaAtualizada = await CategoriaService.updateCategoriaStatus(id, req.body.ativo, vinculo.pizzaria_id);
             res.status(200).json(categoriaAtualizada);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });

@@ -10,43 +10,59 @@ Order.initModel = (sequelize) => {
             defaultValue: sequelize_1.DataTypes.UUIDV4,
             primaryKey: true,
         },
-        pizzaria_id: {
-            type: sequelize_1.DataTypes.UUID,
-            allowNull: false,
-            references: {
-                model: 'pizzarias',
-                key: 'id'
-            }
-        },
         user_id: {
             type: sequelize_1.DataTypes.UUID,
             allowNull: false,
-            references: {
-                model: 'users',
-                key: 'id'
-            }
+        },
+        pizzaria_id: {
+            type: sequelize_1.DataTypes.UUID,
+            allowNull: false,
         },
         status: {
-            type: sequelize_1.DataTypes.ENUM('pendente', 'confirmado', 'em_preparo', 'entregue', 'cancelado'),
+            type: sequelize_1.DataTypes.ENUM("pendente", "confirmado", "preparando", "saiu_para_entrega", "entregue", "cancelado"),
             allowNull: false,
-            defaultValue: 'pendente'
+            defaultValue: "pendente",
         },
         total: {
-            type: sequelize_1.DataTypes.DECIMAL,
-            allowNull: false
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
+            allowNull: false,
         },
-        observacao: {
+        forma_pagamento: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        observacoes: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: true,
         },
-        endereco_entrega: {
+        endereco_cep: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: true
-        }
+            allowNull: false,
+        },
+        endereco_rua: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        endereco_numero: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        endereco_bairro: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        endereco_complemento: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        endereco_referencia: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
     }, {
         sequelize,
-        modelName: 'Order',
-        tableName: 'orders',
+        modelName: "Order",
+        tableName: "orders",
         underscored: true,
     });
     return Order;

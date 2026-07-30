@@ -10,14 +10,6 @@ Produto.initModel = (sequelize) => {
             defaultValue: sequelize_1.DataTypes.UUIDV4,
             primaryKey: true,
         },
-        pizzaria_id: {
-            type: sequelize_1.DataTypes.UUID,
-            allowNull: false,
-            references: {
-                model: 'pizzarias',
-                key: 'id'
-            }
-        },
         nome: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false
@@ -28,11 +20,20 @@ Produto.initModel = (sequelize) => {
         },
         preco: {
             type: sequelize_1.DataTypes.DECIMAL,
-            allowNull: false
+            allowNull: true
         },
-        categoria: {
-            type: sequelize_1.DataTypes.ENUM('pizza', 'esfiha', 'bebida', 'sobremesa'),
+        tipo: {
+            type: sequelize_1.DataTypes.ENUM('simples', 'pizza'),
             allowNull: false,
+            defaultValue: 'simples'
+        },
+        categoria_id: {
+            type: sequelize_1.DataTypes.UUID,
+            allowNull: false,
+            references: {
+                model: 'categorias',
+                key: 'id'
+            }
         },
         imagem_url: {
             type: sequelize_1.DataTypes.STRING,
@@ -41,12 +42,23 @@ Produto.initModel = (sequelize) => {
         disponivel: {
             type: sequelize_1.DataTypes.BOOLEAN,
             defaultValue: true
+        },
+        excluido: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, {
         sequelize,
         modelName: 'Produto',
         tableName: 'produtos',
         underscored: true,
+        validate: {
+            precoObrigatorioParaSimples() {
+                if (this.tipo === 'simples' && (this.preco === null || this.preco === undefined)) {
+                    throw new Error('Produto do tipo "simples" exige preço.');
+                }
+            }
+        }
     });
     return Produto;
 };

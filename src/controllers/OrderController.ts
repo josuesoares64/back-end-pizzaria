@@ -28,15 +28,7 @@ class OrderController {
 
     async getPedidosPizzaria(req: Request, res: Response) {
         try {
-            const vinculo = await db.PizzariaUser.findOne({
-                where: { user_id: req.userId }
-            });
-
-            if (!vinculo) {
-                return res.status(403).json({ error: "Usuário não tem acesso a nenhuma pizzaria" });
-            }
-
-            const pedidos = await OrderServices.listaPedidosPizzaria(vinculo.pizzaria_id);
+            const pedidos = await OrderServices.listaPedidosPizzaria(req.pizzariaId as string);
             res.status(200).json(pedidos);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
@@ -47,8 +39,19 @@ class OrderController {
         try {
             const id = req.params.id as string;
             const status = req.body.status as OrderStatus;
-            const order = await OrderServices.updateStatus(id, status);
-            res.status(200).json(order);
+
+            const order = await db.Order.findByPk(id);
+
+            if (!order) {
+                return res.status(404).json({ error: "Pedido não encontrado" });
+            }
+
+            if (order.pizzaria_id !== req.pizzariaId) {
+                return res.status(403).json({ error: "Pedido não pertence à sua pizzaria" });
+            }
+
+            const pedidoAtualizado = await OrderServices.updateStatus(id, status);
+            res.status(200).json(pedidoAtualizado);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
         }

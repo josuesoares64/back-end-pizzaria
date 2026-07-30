@@ -157,7 +157,19 @@ class OrderServices {
   async listaPedidosCliente(user_id: string) {
     return db.Order.findAll({
       where: { user_id },
-      include: [{ model: db.OrderItem, as: "itens" }],
+      include: [
+        {
+          model: db.OrderItem,
+          as: "itens",
+          include: [
+            { model: db.Produto, as: "produto", attributes: ["id", "nome"] },
+            { model: db.Produto, as: "produtoSegundoSabor", attributes: ["id", "nome"] },
+            { model: db.Tamanho, as: "tamanho", attributes: ["id", "nome"] },
+            { model: db.Borda, as: "borda", attributes: ["id", "nome"] },
+          ],
+        },
+        { model: db.Pizzaria, as: "pizzaria", attributes: ["id", "nome"] },
+      ],
       order: [["createdAt", "DESC"]],
     });
   }
@@ -165,7 +177,19 @@ class OrderServices {
   async listaPedidosPizzaria(pizzaria_id: string) {
     return db.Order.findAll({
       where: { pizzaria_id },
-      include: [{ model: db.OrderItem, as: "itens" }],
+      include: [
+        {
+          model: db.OrderItem,
+          as: "itens",
+          include: [
+            { model: db.Produto, as: "produto", attributes: ["id", "nome"] },
+            { model: db.Produto, as: "produtoSegundoSabor", attributes: ["id", "nome"] },
+            { model: db.Tamanho, as: "tamanho", attributes: ["id", "nome"] },
+            { model: db.Borda, as: "borda", attributes: ["id", "nome"] },
+          ],
+        },
+        { model: db.User, as: "cliente", attributes: ["id", "nome", "telefone"] },
+      ],
       order: [["createdAt", "DESC"]],
     });
   }

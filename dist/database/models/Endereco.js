@@ -13,10 +13,10 @@ Endereco.initModel = (sequelize) => {
         user_id: {
             type: sequelize_1.DataTypes.UUID,
             allowNull: false,
-            references: {
-                model: 'users',
-                key: 'id'
-            }
+        },
+        cep: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
         },
         rua: {
             type: sequelize_1.DataTypes.STRING,
@@ -30,27 +30,19 @@ Endereco.initModel = (sequelize) => {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
-        cidade: {
+        complemento: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
-        estado: {
+        referencia: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
-        cep: {
-            type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
-        },
-        principal: {
-            type: sequelize_1.DataTypes.BOOLEAN,
-            defaultValue: false
-        }
     }, {
         sequelize,
-        modelName: 'Endereco',
-        tableName: 'enderecos',
-        underscored: true
+        modelName: "Endereco",
+        tableName: "enderecos",
+        underscored: true,
     });
     return Endereco;
 };

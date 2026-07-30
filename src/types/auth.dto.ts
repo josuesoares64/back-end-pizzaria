@@ -8,7 +8,7 @@ export interface RegisterDTO {
     email: string;
     senha: string;
     role: Role;
-    telefone?: string;
+    telefone: string;
 }
 
 export type Role = 'cliente' | 'dono' | 'funcionario' | 'superadmin';

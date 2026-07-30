@@ -4,11 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const PizzariaController_1 = __importDefault(require("../controllers/PizzariaController"));
+const EnderecoController_1 = __importDefault(require("../controllers/EnderecoController"));
 const checkAuth_1 = __importDefault(require("../middlewares/checkAuth"));
 const router = (0, express_1.Router)();
-router.get("/", PizzariaController_1.default.listaPizzarias);
-router.get("/me", checkAuth_1.default, PizzariaController_1.default.getMe);
-router.get("/:slug", PizzariaController_1.default.getSlug);
-router.patch("/me", checkAuth_1.default, PizzariaController_1.default.editarPizzaria);
+router.get("/me", checkAuth_1.default, EnderecoController_1.default.getEndereco);
+router.put("/me", checkAuth_1.default, EnderecoController_1.default.upsertEndereco);
 exports.default = router;

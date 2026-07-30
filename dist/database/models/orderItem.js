@@ -13,31 +13,43 @@ OrderItem.initModel = (sequelize) => {
         order_id: {
             type: sequelize_1.DataTypes.UUID,
             allowNull: false,
-            references: {
-                model: 'orders',
-                key: 'id'
-            }
         },
         produto_id: {
             type: sequelize_1.DataTypes.UUID,
             allowNull: false,
-            references: {
-                model: 'produtos',
-                key: 'id'
-            }
+        },
+        produto_id_2: {
+            type: sequelize_1.DataTypes.UUID,
+            allowNull: true,
+        },
+        tamanho_id: {
+            type: sequelize_1.DataTypes.UUID,
+            allowNull: true,
+        },
+        borda_id: {
+            type: sequelize_1.DataTypes.UUID,
+            allowNull: true,
         },
         quantidade: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        preco_unit: {
-            type: sequelize_1.DataTypes.DECIMAL,
-            allowNull: false
-        }
+        preco_unitario: {
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
+            allowNull: false,
+        },
+        subtotal: {
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
+            allowNull: false,
+        },
+        observacoes: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
     }, {
         sequelize,
-        modelName: 'OrderItem',
-        tableName: 'order_items',
+        modelName: "OrderItem",
+        tableName: "order_items",
         underscored: true,
     });
     return OrderItem;
