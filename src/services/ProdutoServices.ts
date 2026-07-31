@@ -5,12 +5,19 @@ class ProdutoServices {
     async getProduto(pizzariaId: string) {
         const produtos = await db.Produto.findAll({
             where: { excluido: false },
-            include: [{
-                model: db.Categoria,
-                as: 'categoria',
-                where: { pizzaria_id: pizzariaId },
-                attributes: []
-            }],
+            include: [
+                {
+                    model: db.Categoria,
+                    as: 'categoria',
+                    where: { pizzaria_id: pizzariaId },
+                    attributes: []
+                },
+                {
+                    model: db.ProdutoPreco,
+                    as: 'precos',
+                    attributes: ['id', 'preco', 'tamanho_id']
+                }
+            ],
             attributes: ['id', 'nome', 'descricao', 'preco', 'tipo', 'categoria_id', 'imagem_url', 'disponivel']
         });
         return produtos;
@@ -69,12 +76,10 @@ class ProdutoServices {
             }
         }
 
-        await db.Produto.update(dadosParaAtualizar, { where: { id } });
-        return db.Produto.findByPk(id);
+        await produtoExistente.update(dadosParaAtualizar);
+        return produtoExistente;
     }
 
-    // Update isolado pra status: NÃO roda a validação completa do model
-    // (ex: "simples exige preço") já que aqui só o campo `disponivel` muda.
     async updateStatusProduto(id: string, disponivel: boolean, pizzariaId: string) {
         const produtoExistente = await db.Produto.findOne({
             where: { id },
@@ -95,8 +100,6 @@ class ProdutoServices {
         return db.Produto.findByPk(id);
     }
 
-    // Soft delete: marca excluido=true em vez de apagar a linha.
-    // Preserva a integridade de pedidos antigos que referenciam esse produto.
     async deleteProduto(id: string, pizzariaId: string) {
         const produtoExistente = await db.Produto.findOne({
             where: { id },

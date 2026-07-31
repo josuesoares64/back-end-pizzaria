@@ -4,20 +4,21 @@ import BordaService from "../services/BordaService";
 
 class BordaController {
     async getBorda(req: Request, res: Response) {
-
         if (!req.userId) {
             return res.status(401).json({ error: "Não autenticado" });
         }
 
         try {
             const vinculo = await db.PizzariaUser.findOne({
-                where: {
-                    user_id: req.userId,
-                    role: 'dono'
-                }
+                where: { user_id: req.userId }
             });
+
             if (!vinculo) {
-                return res.status(403).json({ error: "Usuário não é dono de nenhuma pizzaria" })
+                return res.status(403).json({ error: "Usuário não tem acesso a nenhuma pizzaria" });
+            }
+
+            if (vinculo.role !== 'dono' && vinculo.role !== 'funcionario') {
+                return res.status(403).json({ error: "Usuário sem permissão para esta ação" });
             }
 
             const borda = await BordaService.getBorda(vinculo.pizzaria_id);
@@ -111,8 +112,8 @@ class BordaController {
     }
 
     async deleteBorda(req: Request, res: Response) {
-        if(!req.userId) {
-            return res.status(401).json({ error: "Não autenticado"})
+        if (!req.userId) {
+            return res.status(401).json({ error: "Não autenticado" })
         }
 
         const { id } = req.params;
@@ -122,8 +123,8 @@ class BordaController {
                 where: { user_id: req.userId, role: 'dono' }
             });
 
-            if(!vinculo) {
-                return res.status(403).json({ error: "Usuário não é dono desse estabelecimento"})
+            if (!vinculo) {
+                return res.status(403).json({ error: "Usuário não é dono desse estabelecimento" })
             }
 
             const resultado = await BordaService.deleteBorda(id as string, vinculo.pizzaria_id);

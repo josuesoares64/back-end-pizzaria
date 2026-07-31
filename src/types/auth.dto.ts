@@ -24,3 +24,10 @@ export interface OwnerDTO {
     role: Role;
     logo_url: string;
 }
+
+export interface RegisterFuncionarioDTO {
+    nome: string;
+    email: string;
+    senha: string;
+    telefone: string;
+}

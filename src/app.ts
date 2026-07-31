@@ -21,7 +21,7 @@ app.use("/pizzarias", pizzaria)
 app.use("/categorias", categoria);
 app.use("/produtos", produto);
 app.use("/tamanhos", tamanho);
-app.use("/borda", borda);
+app.use("/bordas", borda);
 app.use("/produtos", produtoPreco);
 app.use("/enderecos", endereco)
 app.use("/orders", order)
