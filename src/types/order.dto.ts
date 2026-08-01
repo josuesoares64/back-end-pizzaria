@@ -22,5 +22,6 @@ export interface CreateOrderInput {
   forma_pagamento: string;
   observacoes?: string;
   endereco: EnderecoInput;
+  troco_para?: number;
   itens: CartItemInput[];
 }

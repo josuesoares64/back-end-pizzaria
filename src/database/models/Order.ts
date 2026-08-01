@@ -15,6 +15,7 @@ interface OrderAttributes {
     status?: OrderStatus;
     total: number;
     forma_pagamento: string;
+    troco_para?: number;
     observacoes?: string;
     endereco_cep: string;
     endereco_rua: string;
@@ -31,6 +32,7 @@ class Order extends Model<OrderAttributes> {
     declare status: OrderStatus;
     declare total: number;
     declare forma_pagamento: string;
+    declare troco_para?: number;
     declare observacoes?: string;
     declare endereco_cep: string;
     declare endereco_rua: string;
@@ -74,6 +76,10 @@ class Order extends Model<OrderAttributes> {
                 forma_pagamento: {
                     type: DataTypes.STRING,
                     allowNull: false,
+                },
+                troco_para: {
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: true,
                 },
                 observacoes: {
                     type: DataTypes.STRING,
