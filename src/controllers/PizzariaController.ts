@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import PizzariasService from "../services/PizzariasService"
+import StorageService from "../services/StorageService";
 
 class PizzariaController {
     getMe = async (req: Request, res: Response) => {
@@ -42,7 +43,7 @@ class PizzariaController {
             console.log("Erro ao listar pizzarias:", error);
             return res.status(500).json({
                 error: "Erro ao lista pizzarias",
-                detalhes: error instanceof Error ? error.message: "Error desconhecido",
+                detalhes: error instanceof Error ? error.message : "Error desconhecido",
             });
         }
     }
@@ -62,6 +63,36 @@ class PizzariaController {
             console.log("Erro ao editar pizzaria:", error);
             return res.status(400).json({
                 error: "Erro ao editar pizzaria",
+                detalhes: error instanceof Error ? error.message : "Erro desconhecido",
+            });
+        }
+    }
+
+    uploadLogo = async (req: Request, res: Response) => {
+        if (!req.userId) {
+            return res.status(401).json({ error: "Não autenticado" });
+        }
+        try {
+            if (!req.file) {
+                return res.status(400).json({ error: "Nenhuma imagem enviada" });
+            }
+            const pizzariaAtual = await PizzariasService.getMe(req.userId);
+
+            if (!pizzariaAtual) {
+                return res.status(404).json({ error: "Pizzaria não encontrada" });
+            }
+
+            const logo_url = await StorageService.uploadImagem(
+                req.file,
+                pizzariaAtual.id,
+                "logo"
+            );
+
+            const pizzaria = await PizzariasService.editarPizzaria(req.userId, { logo_url });
+            return res.status(200).json(pizzaria);
+        } catch (error) {
+            return res.status(400).json({
+                error: "Erro ao subir logo",
                 detalhes: error instanceof Error ? error.message : "Erro desconhecido",
             });
         }

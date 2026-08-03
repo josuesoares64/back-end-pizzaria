@@ -31,6 +31,10 @@ Order.initModel = (sequelize) => {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
+        troco_para: {
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
+            allowNull: true,
+        },
         observacoes: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: true,

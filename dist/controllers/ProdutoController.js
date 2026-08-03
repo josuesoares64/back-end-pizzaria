@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const models_1 = __importDefault(require("../database/models"));
 const ProdutoServices_1 = __importDefault(require("../services/ProdutoServices"));
 const sequelize_1 = require("sequelize");
+const StorageService_1 = __importDefault(require("../services/StorageService"));
 class ProdutoController {
     async getProduto(req, res) {
         try {
@@ -20,6 +21,26 @@ class ProdutoController {
             }
             const produtos = await ProdutoServices_1.default.getProduto(vinculo.pizzaria_id);
             res.status(200).json(produtos);
+        }
+        catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+    async uploadImagem(req, res) {
+        try {
+            const vinculo = await models_1.default.PizzariaUser.findOne({
+                where: { user_id: req.userId, role: 'dono' }
+            });
+            if (!vinculo) {
+                return res.status(403).json({ error: "Usuário não é dono de nenhuma pizzaria" });
+            }
+            const { id } = req.params;
+            if (!req.file) {
+                return res.status(400).json({ error: "Nenhuma imagem enviada" });
+            }
+            const imagem_url = await StorageService_1.default.uploadImagem(req.file, vinculo.pizzaria_id, `produtos/${id}`);
+            const produto = await ProdutoServices_1.default.updateProduto(id, { imagem_url }, vinculo.pizzaria_id);
+            res.status(200).json(produto);
         }
         catch (error) {
             res.status(400).json({ error: error.message });

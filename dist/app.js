@@ -24,7 +24,7 @@ exports.app.use("/pizzarias", pizzaria_routes_1.default);
 exports.app.use("/categorias", categoria_routes_1.default);
 exports.app.use("/produtos", produto_routes_1.default);
 exports.app.use("/tamanhos", tamanho_routes_1.default);
-exports.app.use("/borda", borda_routes_1.default);
+exports.app.use("/bordas", borda_routes_1.default);
 exports.app.use("/produtos", produtoPreci_routes_1.default);
 exports.app.use("/enderecos", endereco_routes_1.default);
 exports.app.use("/orders", order_routes_1.default);

@@ -33,7 +33,7 @@ class PizzariaService {
                     attributes: ['id', 'nome'],
                     include: [{
                             model: models_1.default.Produto, as: 'produtos',
-                            where: { disponivel: true },
+                            where: { disponivel: true, excluido: false },
                             required: false,
                             attributes: ['id', 'nome', 'descricao', 'preco', 'tipo', 'imagem_url'],
                             include: [{

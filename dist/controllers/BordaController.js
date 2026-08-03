@@ -12,13 +12,13 @@ class BordaController {
         }
         try {
             const vinculo = await models_1.default.PizzariaUser.findOne({
-                where: {
-                    user_id: req.userId,
-                    role: 'dono'
-                }
+                where: { user_id: req.userId }
             });
             if (!vinculo) {
-                return res.status(403).json({ error: "Usuário não é dono de nenhuma pizzaria" });
+                return res.status(403).json({ error: "Usuário não tem acesso a nenhuma pizzaria" });
+            }
+            if (vinculo.role !== 'dono' && vinculo.role !== 'funcionario') {
+                return res.status(403).json({ error: "Usuário sem permissão para esta ação" });
             }
             const borda = await BordaService_1.default.getBorda(vinculo.pizzaria_id);
             res.status(200).json(borda);

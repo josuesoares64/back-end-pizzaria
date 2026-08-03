@@ -113,6 +113,7 @@ class OrderServices {
                 user_id: input.user_id,
                 pizzaria_id: input.pizzaria_id,
                 forma_pagamento: input.forma_pagamento,
+                troco_para: input.forma_pagamento === "dinheiro" ? input.troco_para : undefined,
                 observacoes: input.observacoes,
                 status: "pendente",
                 total,
