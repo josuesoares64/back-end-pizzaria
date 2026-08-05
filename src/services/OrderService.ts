@@ -202,6 +202,14 @@ class OrderServices {
     await order.save();
     return order;
   }
+
+  async marcarComoImpresso(orderId: string) {
+    const order = await db.Order.findByPk(orderId);
+    if (!order) throw new Error("Pedido não encontrado");
+    order.impresso_em = new Date();
+    await order.save();
+    return order;
+  }
 }
 
 export default new OrderServices();

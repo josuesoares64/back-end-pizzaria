@@ -23,30 +23,30 @@ class ProdutoController {
     }
 
     async uploadImagem(req: Request, res: Response) {
-    try {
-        const vinculo = await db.PizzariaUser.findOne({
-            where: { user_id: req.userId, role: 'dono' }
-        });
-        if (!vinculo) {
-            return res.status(403).json({ error: "Usuário não é dono de nenhuma pizzaria" });
-        }
-        const { id } = req.params as { id: string };
-        if (!req.file) {
-            return res.status(400).json({ error: "Nenhuma imagem enviada" });
-        }
+        try {
+            const vinculo = await db.PizzariaUser.findOne({
+                where: { user_id: req.userId, role: 'dono' }
+            });
+            if (!vinculo) {
+                return res.status(403).json({ error: "Usuário não é dono de nenhuma pizzaria" });
+            }
+            const { id } = req.params as { id: string };
+            if (!req.file) {
+                return res.status(400).json({ error: "Nenhuma imagem enviada" });
+            }
 
-        const imagem_url = await StorageService.uploadImagem(
-            req.file,
-            vinculo.pizzaria_id,
-            `produtos/${id}`
-        );
+            const imagem_url = await StorageService.uploadImagem(
+                req.file,
+                vinculo.pizzaria_id,
+                `produtos/${id}`
+            );
 
-        const produto = await ProdutoServices.updateProduto(id, { imagem_url }, vinculo.pizzaria_id);
-        res.status(200).json(produto);
-    } catch (error) {
-        res.status(400).json({ error: (error as Error).message });
+            const produto = await ProdutoServices.updateProduto(id, { imagem_url }, vinculo.pizzaria_id);
+            res.status(200).json(produto);
+        } catch (error) {
+            res.status(400).json({ error: (error as Error).message });
+        }
     }
-}
 
     async createProduto(req: Request, res: Response) {
         try {

@@ -23,13 +23,29 @@ class StorageService {
   }
 
   async uploadImagem(file: UploadFile, pizzariaId: string, nomeArquivo: string): Promise<string> {
-    // Redimensiona (máx 1200px de largura) e converte pra WebP, independente do formato original
     const buffer = await sharp(file.buffer)
       .resize({ width: 1200, withoutEnlargement: true })
       .webp({ quality: 80 })
       .toBuffer();
 
-    const path = `${pizzariaId}/${nomeArquivo}.webp`;
+    const partes = nomeArquivo.split("/");
+    const nomeBase = partes.pop()!;
+    const subpasta = partes.length ? `/${partes.join("/")}` : "";
+    const pasta = `${pizzariaId}${subpasta}`;
+
+    const timestamp = Date.now();
+    const path = `${pasta}/${nomeBase}-${timestamp}.webp`;
+
+    const { data: existentes } = await this.client.storage.from(BUCKET).list(pasta);
+    const antigos = (existentes ?? [])
+      .filter(
+        (arquivo) =>
+          arquivo.name.startsWith(`${nomeBase}-`) || arquivo.name === `${nomeBase}.webp`,
+      )
+      .map((arquivo) => `${pasta}/${arquivo.name}`);
+    if (antigos.length > 0) {
+      await this.client.storage.from(BUCKET).remove(antigos);
+    }
 
     const { error } = await this.client.storage
       .from(BUCKET)

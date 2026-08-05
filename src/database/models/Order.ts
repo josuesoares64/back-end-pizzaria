@@ -23,6 +23,7 @@ interface OrderAttributes {
     endereco_bairro: string;
     endereco_complemento?: string;
     endereco_referencia?: string;
+    impresso_em?: Date;
 }
 
 class Order extends Model<OrderAttributes> {
@@ -40,6 +41,7 @@ class Order extends Model<OrderAttributes> {
     declare endereco_bairro: string;
     declare endereco_complemento?: string;
     declare endereco_referencia?: string;
+    declare impresso_em?: Date;
 
     static initModel = (sequelize: Sequelize): typeof Order => {
         Order.init(
@@ -109,6 +111,10 @@ class Order extends Model<OrderAttributes> {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
+                impresso_em: {
+                    type: DataTypes.DATE,
+                    allowNull: true,
+                }
             },
             {
                 sequelize,
