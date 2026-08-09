@@ -8,6 +8,8 @@ export type OrderStatus =
     | "entregue"
     | "cancelado";
 
+export type TipoPedido = "entrega" | "retirada" | "mesa";
+
 interface OrderAttributes {
     id?: string;
     user_id: string;
@@ -17,13 +19,15 @@ interface OrderAttributes {
     forma_pagamento: string;
     troco_para?: number;
     observacoes?: string;
-    endereco_cep: string;
-    endereco_rua: string;
-    endereco_numero: string;
-    endereco_bairro: string;
+    endereco_cep?: string;
+    endereco_rua?: string;
+    endereco_numero?: string;
+    endereco_bairro?: string;
     endereco_complemento?: string;
     endereco_referencia?: string;
     impresso_em?: Date;
+    tipo_pedido?: TipoPedido;
+    numero_mesa?: string;
 }
 
 class Order extends Model<OrderAttributes> {
@@ -35,10 +39,10 @@ class Order extends Model<OrderAttributes> {
     declare forma_pagamento: string;
     declare troco_para?: number;
     declare observacoes?: string;
-    declare endereco_cep: string;
-    declare endereco_rua: string;
-    declare endereco_numero: string;
-    declare endereco_bairro: string;
+    declare endereco_cep?: string;
+    declare endereco_rua?: string;
+    declare endereco_numero?: string;
+    declare endereco_bairro?: string;
     declare endereco_complemento?: string;
     declare endereco_referencia?: string;
     declare impresso_em?: Date;
@@ -89,19 +93,19 @@ class Order extends Model<OrderAttributes> {
                 },
                 endereco_cep: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 endereco_rua: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 endereco_numero: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 endereco_bairro: {
                     type: DataTypes.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 endereco_complemento: {
                     type: DataTypes.STRING,
@@ -113,6 +117,15 @@ class Order extends Model<OrderAttributes> {
                 },
                 impresso_em: {
                     type: DataTypes.DATE,
+                    allowNull: true,
+                },
+                tipo_pedido: {
+                    type: DataTypes.ENUM("entrega", "retirada", "mesa"),
+                    allowNull: false,
+                    defaultValue: "entrega",
+                },
+                numero_mesa: {
+                    type: DataTypes.STRING,
                     allowNull: true,
                 }
             },

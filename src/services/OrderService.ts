@@ -101,6 +101,14 @@ class OrderServices {
       throw new Error("Pedido precisa ter ao menos um item");
     }
 
+    // Validação condicional por tipo de pedido — logo no início, fail-fast
+    if (input.tipo_pedido === "entrega" && !input.endereco) {
+      throw new Error("Endereço é obrigatório para pedidos de entrega");
+    }
+    if (input.tipo_pedido === "mesa" && !input.numero_mesa?.trim()) {
+      throw new Error("Número da mesa é obrigatório para pedidos na mesa");
+    }
+
     // Valida ANTES de abrir a transaction - falha rápido, sem tocar no banco à toa
     for (const item of input.itens) {
       await this.validarItemPertenceAPizzaria(item, input.pizzaria_id);
@@ -136,12 +144,14 @@ class OrderServices {
           observacoes: input.observacoes,
           status: "pendente",
           total,
-          endereco_cep: input.endereco.cep,
-          endereco_rua: input.endereco.rua,
-          endereco_numero: input.endereco.numero,
-          endereco_bairro: input.endereco.bairro,
-          endereco_complemento: input.endereco.complemento,
-          endereco_referencia: input.endereco.referencia,
+          tipo_pedido: input.tipo_pedido,
+          numero_mesa: input.tipo_pedido === "mesa" ? input.numero_mesa : undefined,
+          endereco_cep: input.tipo_pedido === "entrega" ? input.endereco?.cep : undefined,
+          endereco_rua: input.tipo_pedido === "entrega" ? input.endereco?.rua : undefined,
+          endereco_numero: input.tipo_pedido === "entrega" ? input.endereco?.numero : undefined,
+          endereco_bairro: input.tipo_pedido === "entrega" ? input.endereco?.bairro : undefined,
+          endereco_complemento: input.tipo_pedido === "entrega" ? input.endereco?.complemento : undefined,
+          endereco_referencia: input.tipo_pedido === "entrega" ? input.endereco?.referencia : undefined,
         },
         { transaction: t }
       );

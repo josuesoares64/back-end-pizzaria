@@ -16,12 +16,16 @@ export interface EnderecoInput {
   referencia?: string;
 }
 
+export type TipoPedido = "entrega" | "retirada" | "mesa";
+
 export interface CreateOrderInput {
   user_id: string;
   pizzaria_id: string;
   forma_pagamento: string;
   observacoes?: string;
-  endereco: EnderecoInput;
+  tipo_pedido: TipoPedido;
+  endereco?: EnderecoInput;
+  numero_mesa?: string;
   troco_para?: number;
   itens: CartItemInput[];
 }
