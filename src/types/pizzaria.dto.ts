@@ -4,4 +4,5 @@ export interface PizzariaUpdateDTO {
     telefone?: string;
     endereco?: string;
     logo_url?: string;
+    taxa_entrega?: number | null;
 }

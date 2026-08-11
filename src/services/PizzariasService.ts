@@ -26,7 +26,7 @@ class PizzariaService {
     async getSlug(slug: string) {
         const pizzaria = await db.Pizzaria.findOne({
             where: { slug, bloqueado: false },
-            attributes: ['id', 'nome', 'slug', 'telefone', 'endereco', 'logo_url'],
+            attributes: ['id', 'nome', 'slug', 'telefone', 'endereco', 'logo_url', 'taxa_entrega'],
             include: [
                 {
                     model: db.Categoria, as: 'categorias',

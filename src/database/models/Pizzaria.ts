@@ -10,6 +10,7 @@ interface PizzariaAttributes {
     logo_url?: string;
     bloqueado?: boolean;
     largura_cupom?: '58mm' | '80mm';
+    taxa_entrega?: number | null;
 }
 
 class Pizzaria extends Model<PizzariaAttributes> {
@@ -22,6 +23,7 @@ class Pizzaria extends Model<PizzariaAttributes> {
     declare logo_url?: string;
     declare bloqueado: boolean;
     declare largura_cupom: '58mm' | '80mm';
+    declare taxa_entrega: number | null;
 
     static initModel = (sequelize: Sequelize): typeof Pizzaria => {
         Pizzaria.init(
@@ -66,6 +68,11 @@ class Pizzaria extends Model<PizzariaAttributes> {
                     type: DataTypes.ENUM('58mm', '80mm'),
                     allowNull: false,
                     defaultValue: '80mm',
+                },
+                taxa_entrega: {
+                    type: DataTypes.DECIMAL(10, 2),
+                    allowNull: true,
+                    defaultValue: null,
                 },
             },
             {

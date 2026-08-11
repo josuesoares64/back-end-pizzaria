@@ -53,8 +53,8 @@ class PizzariaController {
             return res.status(401).json({ error: "Não autenticado" });
         }
 
-        const { nome, slug, telefone, endereco, logo_url, largura_cupom } = req.body;
-        const dados = { nome, slug, telefone, endereco, logo_url, largura_cupom };
+        const { nome, slug, telefone, endereco, logo_url, largura_cupom, taxa_entrega } = req.body;
+        const dados = { nome, slug, telefone, endereco, logo_url, largura_cupom, taxa_entrega };
 
         try {
             const pizzaria = await PizzariasService.editarPizzaria(req.userId, dados);

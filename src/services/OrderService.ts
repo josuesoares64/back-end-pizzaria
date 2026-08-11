@@ -114,6 +114,16 @@ class OrderServices {
       await this.validarItemPertenceAPizzaria(item, input.pizzaria_id);
     }
 
+    // Busca a taxa de entrega da pizzaria (só importa se for pedido de entrega)
+    let taxa_entrega: number | undefined = undefined;
+    if (input.tipo_pedido === "entrega") {
+      const pizzaria = await db.Pizzaria.findByPk(input.pizzaria_id);
+      if (!pizzaria) throw new Error("Pizzaria não encontrada");
+      if (pizzaria.taxa_entrega !== null && pizzaria.taxa_entrega !== undefined) {
+        taxa_entrega = Number(pizzaria.taxa_entrega);
+      }
+    }
+
     return db.sequelize.transaction(async (t: Transaction) => {
       const itensResolvidos = [];
       let total = 0;
@@ -135,6 +145,10 @@ class OrderServices {
         });
       }
 
+      if (taxa_entrega !== undefined) {
+        total += taxa_entrega;
+      }
+
       const order = await db.Order.create(
         {
           user_id: input.user_id,
@@ -145,6 +159,7 @@ class OrderServices {
           status: "pendente",
           total,
           tipo_pedido: input.tipo_pedido,
+          taxa_entrega,
           numero_mesa: input.tipo_pedido === "mesa" ? input.numero_mesa : undefined,
           endereco_cep: input.tipo_pedido === "entrega" ? input.endereco?.cep : undefined,
           endereco_rua: input.tipo_pedido === "entrega" ? input.endereco?.rua : undefined,
