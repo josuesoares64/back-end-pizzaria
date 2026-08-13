@@ -35,7 +35,7 @@ Tamanho_1.default.belongsTo(Pizzaria_1.default, { foreignKey: 'pizzaria_id', as:
 Borda_1.default.belongsTo(Pizzaria_1.default, { foreignKey: 'pizzaria_id', as: 'pizzaria' });
 ProdutoPreco_1.default.belongsTo(Produto_1.default, { foreignKey: 'produto_id', as: 'produto' });
 ProdutoPreco_1.default.belongsTo(Tamanho_1.default, { foreignKey: 'tamanho_id', as: 'tamanho' });
-Endereco_1.default.belongsTo(User_1.default, { as: "cliente", foreignKey: "cliente_id" });
+Endereco_1.default.belongsTo(User_1.default, { as: "cliente", foreignKey: "user_id" });
 Order_1.default.belongsTo(User_1.default, { foreignKey: "user_id", as: "cliente" });
 Order_1.default.belongsTo(Pizzaria_1.default, { foreignKey: "pizzaria_id", as: "pizzaria" });
 OrderItem_1.default.belongsTo(Order_1.default, { foreignKey: "order_id", as: "pedido" });
@@ -49,7 +49,7 @@ User_1.default.hasMany(PizzariaUser_1.default, { foreignKey: 'user_id', as: 'vin
 Pizzaria_1.default.hasMany(Tamanho_1.default, { foreignKey: 'pizzaria_id', as: 'tamanhos' });
 Pizzaria_1.default.hasMany(Borda_1.default, { foreignKey: 'pizzaria_id', as: 'bordas' });
 Produto_1.default.hasMany(ProdutoPreco_1.default, { foreignKey: 'produto_id', as: 'precos' });
-User_1.default.hasOne(Endereco_1.default, { as: "endereco", foreignKey: "cliente_id" });
+User_1.default.hasOne(Endereco_1.default, { as: "endereco", foreignKey: "user_id" });
 User_1.default.hasMany(Order_1.default, { foreignKey: "user_id", as: "pedidos" });
 Pizzaria_1.default.hasMany(Order_1.default, { foreignKey: "pizzaria_id", as: "pedidos" });
 Order_1.default.hasMany(OrderItem_1.default, { foreignKey: "order_id", as: "itens" });

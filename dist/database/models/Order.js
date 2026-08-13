@@ -41,19 +41,19 @@ Order.initModel = (sequelize) => {
         },
         endereco_cep: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         endereco_rua: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         endereco_numero: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         endereco_bairro: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         endereco_complemento: {
             type: sequelize_1.DataTypes.STRING,
@@ -61,6 +61,23 @@ Order.initModel = (sequelize) => {
         },
         endereco_referencia: {
             type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        impresso_em: {
+            type: sequelize_1.DataTypes.DATE,
+            allowNull: true,
+        },
+        tipo_pedido: {
+            type: sequelize_1.DataTypes.ENUM("entrega", "retirada", "mesa"),
+            allowNull: false,
+            defaultValue: "entrega",
+        },
+        numero_mesa: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        taxa_entrega: {
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
             allowNull: true,
         },
     }, {

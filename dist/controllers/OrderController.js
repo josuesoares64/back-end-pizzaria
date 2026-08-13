@@ -54,5 +54,22 @@ class OrderController {
             res.status(400).json({ error: error.message });
         }
     }
+    async imprimirPedido(req, res) {
+        try {
+            const id = req.params.id;
+            const order = await models_1.default.Order.findByPk(id);
+            if (!order) {
+                return res.status(404).json({ error: "Pedido não encontrado" });
+            }
+            if (order.pizzaria_id !== req.pizzariaId) {
+                return res.status(403).json({ error: "Pedido não pertence à sua pizzaria" });
+            }
+            const pedidoAtualizado = await OrderService_1.default.marcarComoImpresso(id);
+            res.status(200).json(pedidoAtualizado);
+        }
+        catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 exports.default = new OrderController();

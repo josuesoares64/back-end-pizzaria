@@ -12,4 +12,5 @@ router.post('/', checkAuth_1.default, OrderController_1.default.createOrder);
 router.get('/me', checkAuth_1.default, OrderController_1.default.getPedidosCliente);
 router.get('/', checkAuth_1.default, checkPizzariaVinculo_1.default, OrderController_1.default.getPedidosPizzaria);
 router.patch('/:id/status', checkAuth_1.default, checkPizzariaVinculo_1.default, OrderController_1.default.updateStatus);
+router.patch('/:id/imprimir', checkAuth_1.default, checkPizzariaVinculo_1.default, OrderController_1.default.imprimirPedido);
 exports.default = router;

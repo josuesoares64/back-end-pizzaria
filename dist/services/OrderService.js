@@ -87,9 +87,26 @@ class OrderServices {
         if (!input.itens || input.itens.length === 0) {
             throw new Error("Pedido precisa ter ao menos um item");
         }
+        // Validação condicional por tipo de pedido — logo no início, fail-fast
+        if (input.tipo_pedido === "entrega" && !input.endereco) {
+            throw new Error("Endereço é obrigatório para pedidos de entrega");
+        }
+        if (input.tipo_pedido === "mesa" && !input.numero_mesa?.trim()) {
+            throw new Error("Número da mesa é obrigatório para pedidos na mesa");
+        }
         // Valida ANTES de abrir a transaction - falha rápido, sem tocar no banco à toa
         for (const item of input.itens) {
             await this.validarItemPertenceAPizzaria(item, input.pizzaria_id);
+        }
+        // Busca a taxa de entrega da pizzaria (só importa se for pedido de entrega)
+        let taxa_entrega = undefined;
+        if (input.tipo_pedido === "entrega") {
+            const pizzaria = await models_1.default.Pizzaria.findByPk(input.pizzaria_id);
+            if (!pizzaria)
+                throw new Error("Pizzaria não encontrada");
+            if (pizzaria.taxa_entrega !== null && pizzaria.taxa_entrega !== undefined) {
+                taxa_entrega = Number(pizzaria.taxa_entrega);
+            }
         }
         return models_1.default.sequelize.transaction(async (t) => {
             const itensResolvidos = [];
@@ -109,6 +126,9 @@ class OrderServices {
                     observacoes: item.observacoes,
                 });
             }
+            if (taxa_entrega !== undefined) {
+                total += taxa_entrega;
+            }
             const order = await models_1.default.Order.create({
                 user_id: input.user_id,
                 pizzaria_id: input.pizzaria_id,
@@ -117,12 +137,15 @@ class OrderServices {
                 observacoes: input.observacoes,
                 status: "pendente",
                 total,
-                endereco_cep: input.endereco.cep,
-                endereco_rua: input.endereco.rua,
-                endereco_numero: input.endereco.numero,
-                endereco_bairro: input.endereco.bairro,
-                endereco_complemento: input.endereco.complemento,
-                endereco_referencia: input.endereco.referencia,
+                tipo_pedido: input.tipo_pedido,
+                taxa_entrega,
+                numero_mesa: input.tipo_pedido === "mesa" ? input.numero_mesa : undefined,
+                endereco_cep: input.tipo_pedido === "entrega" ? input.endereco?.cep : undefined,
+                endereco_rua: input.tipo_pedido === "entrega" ? input.endereco?.rua : undefined,
+                endereco_numero: input.tipo_pedido === "entrega" ? input.endereco?.numero : undefined,
+                endereco_bairro: input.tipo_pedido === "entrega" ? input.endereco?.bairro : undefined,
+                endereco_complemento: input.tipo_pedido === "entrega" ? input.endereco?.complemento : undefined,
+                endereco_referencia: input.tipo_pedido === "entrega" ? input.endereco?.referencia : undefined,
             }, { transaction: t });
             await models_1.default.OrderItem.bulkCreate(itensResolvidos.map((item) => ({ ...item, order_id: order.id })), { transaction: t });
             return order;
@@ -171,6 +194,14 @@ class OrderServices {
         if (!order)
             throw new Error("Pedido não encontrado");
         order.status = novoStatus;
+        await order.save();
+        return order;
+    }
+    async marcarComoImpresso(orderId) {
+        const order = await models_1.default.Order.findByPk(orderId);
+        if (!order)
+            throw new Error("Pedido não encontrado");
+        order.impresso_em = new Date();
         await order.save();
         return order;
     }

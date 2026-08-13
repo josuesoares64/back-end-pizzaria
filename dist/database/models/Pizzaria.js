@@ -40,7 +40,17 @@ Pizzaria.initModel = (sequelize) => {
             type: sequelize_1.DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
-        }
+        },
+        largura_cupom: {
+            type: sequelize_1.DataTypes.ENUM('58mm', '80mm'),
+            allowNull: false,
+            defaultValue: '80mm',
+        },
+        taxa_entrega: {
+            type: sequelize_1.DataTypes.DECIMAL(10, 2),
+            allowNull: true,
+            defaultValue: null,
+        },
     }, {
         sequelize,
         modelName: "Pizzaria",
