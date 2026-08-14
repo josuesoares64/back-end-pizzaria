@@ -53,16 +53,5 @@ Pizzaria.hasMany(Order, { foreignKey: "pizzaria_id", as: "pedidos" });
 Order.hasMany(OrderItem, { foreignKey: "order_id", as: "itens" });
 Produto.hasMany(OrderItem, { foreignKey: "produto_id", as: "itensPedido" });
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Banco conectado');
-        await sequelize.sync({ alter: true });
-        console.log('Modelos sincronizados');
-    } catch (err) {
-        console.error('Erro ao conectar', err)
-    }
-})()
-
 const db = { sequelize, Pizzaria, User, Endereco, Order, OrderItem, PizzariaUser, Produto, Categoria, Tamanho, Borda, ProdutoPreco };
 export default db;

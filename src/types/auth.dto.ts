@@ -11,7 +11,7 @@ export interface RegisterDTO {
     telefone: string;
 }
 
-export type Role = 'cliente' | 'dono' | 'funcionario' | 'superadmin';
+export type Role = 'cliente' | 'dono' | 'funcionario' | 'superadmin' | 'admin';
 
 export interface OwnerDTO {
     nome: string;

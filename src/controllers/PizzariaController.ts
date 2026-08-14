@@ -97,6 +97,26 @@ class PizzariaController {
             });
         }
     }
+
+    async alterarStatusPizzaria(req: Request, res: Response) {
+        try {
+            const id = req.params.id as string;
+            const { bloqueado } = req.body;
+
+            const pizzaria = await PizzariasService.alterarStatusPizzaria(
+                req.userRole as string,
+                id,
+                bloqueado
+            );
+
+            return res.status(200).json({
+                message: `Pizzaria ${bloqueado ? "bloqueada" : "desbloqueada"} com sucesso`,
+                pizzaria
+            });
+        } catch (error: any) {
+            return res.status(400).json({ error: "Erro ao alterar status da pizzaria", detalhes: error.message });
+        }
+    }
 }
 
 export default new PizzariaController;

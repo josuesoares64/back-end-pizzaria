@@ -101,6 +101,20 @@ class PizzariaService {
 
         return vinculo.pizzaria;
     }
+
+    async alterarStatusPizzaria(userRole: string, id: string, bloqueado: boolean) {
+        if (userRole !== 'superadmin' && userRole !== 'admin') {
+            throw new Error("Apenas superadmin ou admin podem alterar o status da pizzaria");
+        }
+
+        const pizzaria = await db.Pizzaria.findOne({ where: { id } });
+
+        if (!pizzaria) throw new Error("Pizzaria não encontrada");
+
+        await pizzaria.update({ bloqueado });
+
+        return pizzaria;
+    }
 }
 
 export default new PizzariaService;

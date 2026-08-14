@@ -10,5 +10,6 @@ router.get("/me", checkAuth, pizzariaController.getMe);
 router.get("/:slug", pizzariaController.getSlug)
 router.patch("/me", checkAuth, pizzariaController.editarPizzaria)
 router.patch("/me/logo", checkAuth, upload.single('logo'), pizzariaController.uploadLogo)
+router.patch("/:id/status", checkAuth, pizzariaController.alterarStatusPizzaria);
 
 export default router;
